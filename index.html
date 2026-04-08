@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Weekly Business Tracker — Abolox</title>
+<title>Weekly Business Tracker — Modonix</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -14,10 +14,7 @@ body{min-height:100vh;padding:0 0 60px}
 .header{border-bottom:1px solid var(--border);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--bg);z-index:100}
 .header-logo{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:500;color:var(--text2);letter-spacing:.1em;text-transform:uppercase}
 .header-logo span{color:var(--accent)}
-.header-right{display:flex;gap:10px;align-items:center}
 .header-tag{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);border:1px solid var(--border);padding:3px 8px;border-radius:4px}
-.header-link{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--accent);border:1px solid rgba(99,102,241,0.3);padding:3px 8px;border-radius:4px;text-decoration:none}
-.header-link:hover{background:rgba(99,102,241,0.1)}
 .container{max-width:1100px;margin:0 auto;padding:24px 24px 0}
 .tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:24px;overflow-x:auto}
 .tab{padding:10px 18px;font-size:12px;font-family:'IBM Plex Mono',monospace;font-weight:500;cursor:pointer;border:none;background:none;color:var(--text3);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;text-transform:uppercase;letter-spacing:.06em;transition:color .15s}
@@ -28,18 +25,18 @@ body{min-height:100vh;padding:0 0 60px}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
 .g4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-.g5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
-@media(max-width:750px){.g4,.g5{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr 1fr}}
-@media(max-width:480px){.g2,.g3,.g4,.g5{grid-template-columns:1fr}}
+@media(max-width:750px){.g4{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.g2,.g3,.g4{grid-template-columns:1fr}}
 label{font-size:11px;color:var(--text3);display:block;margin-bottom:5px;font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.05em}
 input,select{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface2);color:var(--text);font-size:13px;font-family:'IBM Plex Sans',sans-serif;outline:none;transition:border-color .15s}
 input:focus,select:focus{border-color:var(--border2)}
-input[readonly]{background:var(--bg);color:var(--text2);cursor:default}
+input[readonly]{background:var(--bg);color:var(--green);cursor:default;font-weight:500}
 select option{background:var(--surface2)}
 .btn{padding:8px 16px;border-radius:var(--radius);font-size:12px;font-family:'IBM Plex Mono',monospace;font-weight:500;cursor:pointer;transition:all .15s;text-transform:uppercase;letter-spacing:.05em}
 .btn-pri{background:var(--accent);color:#fff;border:none}.btn-pri:hover{background:#5558e8}
 .btn-sec{background:transparent;color:var(--text2);border:1px solid var(--border2)}.btn-sec:hover{color:var(--text);background:var(--surface2)}
 .btn-del{background:transparent;color:var(--red);border:1px solid var(--red-border);padding:4px 10px;font-size:11px}.btn-del:hover{background:var(--red-bg)}
+.btn-pdf{background:transparent;color:var(--green);border:1px solid var(--green-border);padding:7px 14px;font-size:12px;font-family:'IBM Plex Mono',monospace;font-weight:500;cursor:pointer;border-radius:var(--radius);text-transform:uppercase;letter-spacing:.05em}.btn-pdf:hover{background:var(--green-bg)}
 .mc{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:14px}
 .mc-l{font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
 .mc-v{font-size:20px;font-weight:600;color:var(--text);font-family:'IBM Plex Mono',monospace}
@@ -81,7 +78,7 @@ select option{background:var(--surface2)}
 .sep{border:none;border-top:1px solid var(--border);margin:16px 0}
 .hint{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:8px 12px;font-size:11px;color:var(--text3);margin-bottom:12px;line-height:1.6;font-family:'IBM Plex Mono',monospace}
 .hint strong{color:var(--text2)}
-.calc-row{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;margin-bottom:12px}
+.calc-row{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:12px}
 .calc-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
 @media(max-width:700px){.calc-grid{grid-template-columns:1fr 1fr 1fr}}
 .calc-item{text-align:center}
@@ -90,15 +87,14 @@ select option{background:var(--surface2)}
 .msg{font-size:12px;color:var(--green);font-family:'IBM Plex Mono',monospace}
 .err{font-size:12px;color:var(--red);font-family:'IBM Plex Mono',monospace}
 .trend-up{color:var(--green)}.trend-dn{color:var(--red)}.trend-fl{color:var(--text3)}
+.window-selector{display:flex;gap:10px;align-items:flex-end;margin-bottom:16px;flex-wrap:wrap}
+.window-selector select{width:160px}
 </style>
 </head>
 <body>
 <div class="header">
   <div class="header-logo"><span>Weekly</span> Tracker</div>
-  <div class="header-right">
-    <div class="header-tag">Weekly Business Tracker</div>
-    
-  </div>
+  <div class="header-tag">Weekly Business Tracker</div>
 </div>
 <div class="container">
 <div class="tabs">
@@ -112,12 +108,13 @@ select option{background:var(--surface2)}
 <!-- ENTRY -->
 <div id="tab-entry">
   <div class="card">
-    <div class="card-title">Weekly Entry — paste from your reports</div>
-    <div class="hint">Enter raw numbers. AOV, Repeat Rate, MER, and New Revenue/Spend are calculated automatically.</div>
+    <div class="card-title">Weekly Entry</div>
+    <div class="hint">Enter raw numbers. Total Orders, AOV values, MER (Total + Ads), and ratios calculate automatically.</div>
     <div class="g4" style="margin-bottom:14px">
       <div><label>Week Of</label><input type="date" id="e-date"></div>
       <div><label>Ad Spend ($)</label><input type="number" id="e-spend" step="0.01" placeholder="0.00" oninput="calcAuto()"></div>
-      <div></div><div></div>
+      <div><label>PPC Revenue ($)</label><input type="number" id="e-ppcrev" step="0.01" placeholder="0.00" oninput="calcAuto()"></div>
+      <div></div>
     </div>
     <hr class="sep">
     <div class="card-title">Revenue</div>
@@ -127,22 +124,26 @@ select option{background:var(--surface2)}
       <div><label>Repeat Revenue ($)</label><input type="number" id="e-reprev" step="0.01" placeholder="0.00" oninput="calcAuto()"></div>
     </div>
     <hr class="sep">
-    <div class="card-title">Orders</div>
+    <div class="card-title">Orders — Enter New + Repeat, Total calculates automatically</div>
     <div class="g3" style="margin-bottom:14px">
-      <div><label>Total Orders</label><input type="number" id="e-orders" placeholder="0" oninput="calcAuto()"></div>
       <div><label>New Orders</label><input type="number" id="e-neworders" placeholder="0" oninput="calcAuto()"></div>
       <div><label>Repeat Orders</label><input type="number" id="e-reporders" placeholder="0" oninput="calcAuto()"></div>
+      <div><label>Total Orders (auto)</label><input type="number" id="e-orders" readonly placeholder="0"></div>
     </div>
     <hr class="sep">
-    <div class="card-title">Auto-calculated</div>
+    <div class="card-title">Auto-Calculated</div>
     <div id="auto-calc" style="display:none" class="calc-row">
-      <div class="calc-grid">
+      <div class="calc-grid" style="grid-template-columns:repeat(5,minmax(0,1fr));margin-bottom:10px">
+        <div class="calc-item"><div class="calc-label">Total MER</div><div class="calc-val" id="c-mer">—</div></div>
+        <div class="calc-item"><div class="calc-label">Ads MER</div><div class="calc-val" id="c-adsmer">—</div></div>
+        <div class="calc-item"><div class="calc-label">New Rev / Spend</div><div class="calc-val" id="c-nrs">—</div></div>
+        <div class="calc-item"><div class="calc-label">Repeat Rate</div><div class="calc-val" id="c-reprate">—</div></div>
+        <div class="calc-item"><div class="calc-label">Total Orders</div><div class="calc-val" id="c-orders">—</div></div>
+      </div>
+      <div class="calc-grid" style="grid-template-columns:repeat(5,minmax(0,1fr))">
         <div class="calc-item"><div class="calc-label">AOV</div><div class="calc-val" id="c-aov">—</div></div>
         <div class="calc-item"><div class="calc-label">New AOV</div><div class="calc-val" id="c-newaov">—</div></div>
         <div class="calc-item"><div class="calc-label">Repeat AOV</div><div class="calc-val" id="c-repaov">—</div></div>
-        <div class="calc-item"><div class="calc-label">Repeat Rate</div><div class="calc-val" id="c-reprate">—</div></div>
-        <div class="calc-item"><div class="calc-label">MER</div><div class="calc-val" id="c-mer">—</div></div>
-        <div class="calc-item"><div class="calc-label">New Rev / Spend</div><div class="calc-val" id="c-nrs">—</div></div>
         <div class="calc-item"><div class="calc-label">New % of Rev</div><div class="calc-val" id="c-newpct">—</div></div>
         <div class="calc-item"><div class="calc-label">Repeat % of Rev</div><div class="calc-val" id="c-reppct">—</div></div>
       </div>
@@ -156,14 +157,28 @@ select option{background:var(--surface2)}
 
 <!-- 4-WEEK WINDOW -->
 <div id="tab-window" style="display:none">
+  <div class="window-selector">
+    <div><label style="margin-bottom:4px">Starting Week</label>
+      <select id="win-start" onchange="renderWindow()"></select>
+    </div>
+    <div style="font-size:12px;color:var(--text3);font-family:'IBM Plex Mono',monospace;padding-bottom:8px">
+      Shows 4 weeks from selected start. Defaults to most recent 4.
+    </div>
+  </div>
   <div class="card">
-    <div class="card-title">Rolling Window — Last 4 Weeks</div>
+    <div class="card-title">Rolling Window — 4 Weeks</div>
     <div id="win-content"></div>
   </div>
 </div>
 
 <!-- DECISION -->
 <div id="tab-decision" style="display:none">
+  <div class="window-selector">
+    <div><label style="margin-bottom:4px">Starting Week</label>
+      <select id="dec-start" onchange="renderDecision()"></select>
+    </div>
+    <button class="btn-pdf" onclick="exportDecisionPDF()">Export PDF</button>
+  </div>
   <div id="dec-content"></div>
 </div>
 
@@ -186,60 +201,74 @@ select option{background:var(--surface2)}
 <!-- SETTINGS -->
 <div id="tab-settings" style="display:none">
   <div class="card">
-    <div class="card-title">Decision Layer Thresholds</div>
-    <div class="g3" style="margin-bottom:16px">
+    <div class="card-title">Client Information</div>
+    <div class="g2" style="margin-bottom:16px;max-width:500px">
+      <div><label>Client Name</label><input type="text" id="s-client" placeholder="e.g. Abolox LLC" oninput="updateSettings()"></div>
+      <div><label>Prepared By</label><input type="text" id="s-preparer" placeholder="e.g. Ahmed — Modonix" oninput="updateSettings()"></div>
+    </div>
+    <hr class="sep">
+    <div class="card-title">MER Thresholds</div>
+    <div class="g3" style="margin-bottom:16px;max-width:600px">
       <div><label>MER Floor (×)</label><input type="number" id="s-mer-floor" step="0.5" oninput="updateSettings()"></div>
-      <div><label>MER Strong (×)</label><input type="number" id="s-mer-strong" step="0.5" oninput="updateSettings()"></div>
       <div><label>MER Acceptable (×)</label><input type="number" id="s-mer-accept" step="0.5" oninput="updateSettings()"></div>
+      <div><label>MER Strong (×)</label><input type="number" id="s-mer-strong" step="0.5" oninput="updateSettings()"></div>
     </div>
     <div id="mer-zone-table"></div>
     <hr class="sep">
     <div class="card-title">Data</div>
-    <p style="font-size:12px;color:var(--text3);margin-bottom:10px">All data stored in your browser. <strong style="color:var(--text2)" id="entry-count"></strong></p>
-    <button class="btn btn-del" onclick="if(confirm('Delete ALL weekly tracker data?')){localStorage.removeItem('wt_v1');location.reload()}">Clear All Data</button>
+    <p style="font-size:12px;color:var(--text3);margin-bottom:10px"><strong style="color:var(--text2)" id="entry-count"></strong> weeks saved in browser storage.</p>
+    <button class="btn btn-del" onclick="if(confirm('Delete ALL weekly tracker data?')){localStorage.removeItem('wt_v2');location.reload()}">Clear All Data</button>
   </div>
 </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
-const SK='wt_v1';
+const SK='wt_v2';
 let db=JSON.parse(localStorage.getItem(SK)||'null')||{
-  settings:{merFloor:10,merStrong:12,merAccept:10},
+  settings:{merFloor:10,merStrong:12,merAccept:10,clientName:'',preparedBy:'Ahmed — Modonix'},
   entries:[]
 };
 function save(){localStorage.setItem(SK,JSON.stringify(db))}
 function cfg(){return db.settings}
 
 function calcEntry(e){
-  const aov=e.orders>0?e.rev/e.orders:0;
-  const newAov=e.newOrders>0?e.newRev/e.newOrders:0;
-  const repAov=e.repOrders>0?e.repRev/e.repOrders:0;
-  const repRate=e.orders>0?e.repOrders/e.orders:0;
+  const orders=(e.newOrders||0)+(e.repOrders||0);
+  const aov=orders>0?e.rev/orders:0;
+  const newAov=(e.newOrders||0)>0?e.newRev/(e.newOrders||0):0;
+  const repAov=(e.repOrders||0)>0?e.repRev/(e.repOrders||0):0;
+  const repRate=orders>0?(e.repOrders||0)/orders:0;
   const mer=e.spend>0?e.rev/e.spend:0;
-  const nrs=e.spend>0?e.newRev/e.spend:0;
-  const newPct=e.rev>0?e.newRev/e.rev:0;
-  const repPct=e.rev>0?e.repRev/e.rev:0;
-  return{...e,aov,newAov,repAov,repRate,mer,nrs,newPct,repPct};
+  const adsMer=e.spend>0?(e.ppcRev||0)/e.spend:0;
+  const nrs=e.spend>0?(e.newRev||0)/e.spend:0;
+  const newPct=e.rev>0?(e.newRev||0)/e.rev:0;
+  const repPct=e.rev>0?(e.repRev||0)/e.rev:0;
+  return{...e,orders,aov,newAov,repAov,repRate,mer,adsMer,nrs,newPct,repPct};
 }
 
 function calcAuto(){
   const rev=parseFloat(document.getElementById('e-rev').value)||0;
   const newRev=parseFloat(document.getElementById('e-newrev').value)||0;
   const repRev=parseFloat(document.getElementById('e-reprev').value)||0;
-  const orders=parseFloat(document.getElementById('e-orders').value)||0;
   const newOrders=parseFloat(document.getElementById('e-neworders').value)||0;
   const repOrders=parseFloat(document.getElementById('e-reporders').value)||0;
   const spend=parseFloat(document.getElementById('e-spend').value)||0;
+  const ppcRev=parseFloat(document.getElementById('e-ppcrev').value)||0;
+  const orders=newOrders+repOrders;
+  // Update total orders field
+  document.getElementById('e-orders').value=orders||'';
   if(!rev&&!orders&&!spend){document.getElementById('auto-calc').style.display='none';return;}
-  const e={rev,newRev,repRev,orders,newOrders,repOrders,spend};
+  const e={rev,newRev,repRev,newOrders,repOrders,spend,ppcRev};
   const c=calcEntry(e);
   document.getElementById('auto-calc').style.display='block';
+  document.getElementById('c-mer').textContent=c.mer>0?fmtR(c.mer):'—';
+  document.getElementById('c-adsmer').textContent=c.adsMer>0?fmtR(c.adsMer):'—';
+  document.getElementById('c-nrs').textContent=c.nrs>0?fmtR(c.nrs):'—';
+  document.getElementById('c-reprate').textContent=c.repRate>0?fmtPct(c.repRate):'—';
+  document.getElementById('c-orders').textContent=orders||'—';
   document.getElementById('c-aov').textContent=c.aov>0?fmt$(c.aov):'—';
   document.getElementById('c-newaov').textContent=c.newAov>0?fmt$(c.newAov):'—';
   document.getElementById('c-repaov').textContent=c.repAov>0?fmt$(c.repAov):'—';
-  document.getElementById('c-reprate').textContent=c.repRate>0?fmtPct(c.repRate):'—';
-  document.getElementById('c-mer').textContent=c.mer>0?fmtR(c.mer):'—';
-  document.getElementById('c-nrs').textContent=c.nrs>0?fmtR(c.nrs):'—';
   document.getElementById('c-newpct').textContent=c.newPct>0?fmtPct(c.newPct):'—';
   document.getElementById('c-reppct').textContent=c.repPct>0?fmtPct(c.repPct):'—';
 }
@@ -247,78 +276,82 @@ function calcAuto(){
 function saveEntry(){
   const date=document.getElementById('e-date').value;
   const spend=parseFloat(document.getElementById('e-spend').value)||0;
+  const ppcRev=parseFloat(document.getElementById('e-ppcrev').value)||0;
   const rev=parseFloat(document.getElementById('e-rev').value)||0;
   const newRev=parseFloat(document.getElementById('e-newrev').value)||0;
   const repRev=parseFloat(document.getElementById('e-reprev').value)||0;
-  const orders=parseFloat(document.getElementById('e-orders').value)||0;
   const newOrders=parseFloat(document.getElementById('e-neworders').value)||0;
   const repOrders=parseFloat(document.getElementById('e-reporders').value)||0;
   const msg=document.getElementById('e-msg');
   if(!date||!rev||!spend){msg.className='err';msg.textContent='Date, revenue, and spend required.';return;}
-  db.entries.push({id:'e'+Date.now(),date,spend,rev,newRev,repRev,orders,newOrders,repOrders});
+  db.entries.push({id:'e'+Date.now(),date,spend,ppcRev,rev,newRev,repRev,newOrders,repOrders});
   db.entries.sort((a,b)=>a.date.localeCompare(b.date));
   save();
+  populateWindowSelectors();
   msg.className='msg';msg.textContent='Saved.';
   setTimeout(()=>msg.textContent='',2500);
-  ['e-spend','e-rev','e-newrev','e-reprev','e-orders','e-neworders','e-reporders'].forEach(id=>document.getElementById(id).value='');
+  ['e-spend','e-ppcrev','e-rev','e-newrev','e-reprev','e-neworders','e-reporders','e-orders'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.value='';
+  });
   document.getElementById('auto-calc').style.display='none';
 }
 
-function getLast4(){return db.entries.slice(-4).map(calcEntry)}
+function getWindow(startDate){
+  const all=db.entries.map(calcEntry);
+  if(!startDate||!all.length) return all.slice(-4);
+  const idx=all.findIndex(e=>e.date===startDate);
+  if(idx<0) return all.slice(-4);
+  return all.slice(idx,idx+4);
+}
 
 function getMerZone(mer){
-  const s=cfg().merStrong,a=cfg().merAccept,f=cfg().merFloor;
-  if(mer>=s) return{status:'STRONG',cls:'bg'};
-  if(mer>=a) return{status:'ACCEPTABLE',cls:'bb'};
-  if(mer>=f) return{status:'WEAK',cls:'by'};
+  if(mer>=cfg().merStrong) return{status:'STRONG',cls:'bg'};
+  if(mer>=cfg().merAccept) return{status:'ACCEPTABLE',cls:'bb'};
+  if(mer>=cfg().merFloor) return{status:'WEAK',cls:'by'};
   return{status:'FAIL',cls:'br'};
 }
 
 function calcDecision(entries){
   if(entries.length<2) return null;
-  const n=entries.length;
-  const w1=entries[0],wN=entries[n-1];
-  // MER trend
+  const n=entries.length,w1=entries[0],wN=entries[n-1];
   const merArr=entries.map(e=>e.mer);
   const merTrend=w1.mer>0?(wN.mer-w1.mer)/w1.mer:0;
   const merTrendSt=merTrend>=0.1?'IMPROVING':merTrend<=-0.1?'DECLINING':'FLAT';
   const avgMer=merArr.reduce((a,b)=>a+b,0)/n;
+  const avgAdsMer=entries.map(e=>e.adsMer).reduce((a,b)=>a+b,0)/n;
   const merZone=getMerZone(avgMer);
-  // AOV trend
   const aovTrend=w1.aov>0?(wN.aov-w1.aov)/w1.aov:0;
   const aovSt=aovTrend>=0.05?'IMPROVING':aovTrend<=-0.05?'DECLINING':'FLAT';
-  // New Rev/Spend trend
   const nrsTrend=w1.nrs>0?(wN.nrs-w1.nrs)/w1.nrs:0;
   const nrsSt=nrsTrend>=0.1?'IMPROVING':nrsTrend<=-0.1?'DECLINING':'FLAT';
-  // Repeat rate trend
   const repTrend=w1.repRate>0?(wN.repRate-w1.repRate)/w1.repRate:0;
   const repSt=repTrend>=0.05?'IMPROVING':repTrend<=-0.05?'DECLINING':'FLAT';
-  // Stability
   const merMean=avgMer;
   const merStd=Math.sqrt(merArr.reduce((a,b)=>a+Math.pow(b-merMean,2),0)/n);
   const stability=merStd<=0.15*merMean?'STABLE':merStd<=0.3*merMean?'VOLATILE':'UNSTABLE';
-  // Decision
   let dec='HOLD';
   const drivers=[];
-  if(merZone.status==='FAIL'){dec='INVESTIGATE — MER BELOW FLOOR';drivers.push({signal:'MER',value:fmtR(avgMer),severity:'override',reason:'4W average MER is below your floor of '+cfg().merFloor+'×. Business is spending more than it should relative to total revenue.'});}
-  else if(merZone.status==='WEAK'){dec='CAUTION';drivers.push({signal:'MER',value:fmtR(avgMer),severity:'warning',reason:'MER is between floor and acceptable. Watch closely — margin is compressing.'});}
-  else if(merTrendSt==='DECLINING'&&merZone.status!=='STRONG'){dec='CAUTION';drivers.push({signal:'MER Trend',value:'Declining '+((merTrend*100).toFixed(1))+'%',severity:'warning',reason:'MER is declining week over week. Revenue efficiency is eroding.'});}
-  else if(merZone.status==='STRONG'&&merTrendSt==='IMPROVING'&&stability==='STABLE'){dec='SCALE';}
-  else if(merZone.status==='STRONG'&&merTrendSt==='IMPROVING'){dec='SCALE (MONITOR)';}
-  else if(merZone.status==='STRONG'){dec='HOLD — STRONG';}
-  else dec='HOLD';
-  if(aovSt==='DECLINING') drivers.push({signal:'AOV',value:'Declining '+((aovTrend*100).toFixed(1))+'%',severity:'warning',reason:'Average order value is falling. Could indicate discounting, product mix shift, or smaller basket sizes.'});
-  if(nrsSt==='DECLINING') drivers.push({signal:'New Rev/Spend',value:'Declining '+((nrsTrend*100).toFixed(1))+'%',severity:'warning',reason:'Getting less new revenue per dollar spent. Acquisition efficiency is dropping.'});
-  if(repSt==='DECLINING') drivers.push({signal:'Repeat Rate',value:'Declining '+((repTrend*100).toFixed(1))+'%',severity:'warning',reason:'Fewer repeat customers. Retention may be weakening.'});
-  const rationales={
-    'SCALE':'MER is STRONG, trend IMPROVING, signal STABLE. Business health supports scaling ad spend.',
-    'SCALE (MONITOR)':'MER is STRONG and improving, but signal is volatile. Scale carefully — watch weekly.',
-    'HOLD — STRONG':'MER is strong but trend is flat. No urgency to scale or cut. Optimize and hold.',
-    'HOLD':'Business metrics are acceptable. No clear signal to scale or reduce. Monitor trend.',
-    'CAUTION':'MER is weakening or trending down. Do not increase spend. Investigate before any changes.',
-    'INVESTIGATE — MER BELOW FLOOR':'MER has fallen below your profitability floor. Cut new spend and find the driver immediately.'
-  };
-  return{dec,merZone,merTrendSt,aovSt,nrsSt,repSt,stability,avgMer,merTrend:(merTrend*100).toFixed(1),merStd:merStd.toFixed(3),rationale:rationales[dec]||'',drivers,w1,wN};
+  if(merZone.status==='FAIL'){
+    dec='INVESTIGATE — MER BELOW FLOOR';
+    drivers.push({signal:'Total MER',value:fmtR(avgMer),severity:'override',reason:'4W average MER is below your floor of '+cfg().merFloor+'×. Business is spending more than it should relative to total revenue.'});
+  } else if(merZone.status==='WEAK'){
+    dec='CAUTION';
+    drivers.push({signal:'Total MER',value:fmtR(avgMer),severity:'warning',reason:'MER is between floor and acceptable. Watch closely — margin is compressing.'});
+  } else if(merTrendSt==='DECLINING'&&merZone.status!=='STRONG'){
+    dec='CAUTION';
+    drivers.push({signal:'MER Trend',value:'Declining '+(merTrend*100).toFixed(1)+'%',severity:'warning',reason:'MER is declining week over week. Revenue efficiency is eroding.'});
+  } else if(merZone.status==='STRONG'&&merTrendSt==='IMPROVING'&&stability==='STABLE'){
+    dec='SCALE';
+  } else if(merZone.status==='STRONG'&&merTrendSt==='IMPROVING'){
+    dec='SCALE (MONITOR)';
+  } else if(merZone.status==='STRONG'){
+    dec='HOLD — STRONG';
+  } else dec='HOLD';
+  if(aovSt==='DECLINING') drivers.push({signal:'AOV',value:'Declining '+(aovTrend*100).toFixed(1)+'%',severity:'warning',reason:'Average order value is falling. Could indicate discounting, product mix shift, or smaller basket sizes.'});
+  if(nrsSt==='DECLINING') drivers.push({signal:'New Rev/Spend',value:'Declining '+(nrsTrend*100).toFixed(1)+'%',severity:'warning',reason:'Getting less new revenue per dollar spent. Acquisition efficiency is dropping.'});
+  if(repSt==='DECLINING') drivers.push({signal:'Repeat Rate',value:'Declining '+(repTrend*100).toFixed(1)+'%',severity:'warning',reason:'Fewer repeat customers. Retention may be weakening.'});
+  const RAT={'SCALE':'MER is STRONG, trend IMPROVING, signal STABLE. Business health supports scaling ad spend.','SCALE (MONITOR)':'MER is STRONG and improving, but signal is volatile. Scale carefully — watch weekly.','HOLD — STRONG':'MER is strong but trend is flat. No urgency to scale or cut. Optimize and hold.','HOLD':'Business metrics are acceptable. No clear signal to scale or reduce. Monitor trend.','CAUTION':'MER is weakening or trending down. Do not increase spend. Investigate before any changes.','INVESTIGATE — MER BELOW FLOOR':'MER has fallen below your profitability floor. Cut new spend and find the driver immediately.'};
+  return{dec,merZone,merTrendSt,aovSt,nrsSt,repSt,stability,avgMer,avgAdsMer,merTrend:(merTrend*100).toFixed(1),merStd:merStd.toFixed(3),rationale:RAT[dec]||'',drivers,w1,wN,entries};
 }
 
 function decCls(d){
@@ -326,11 +359,21 @@ function decCls(d){
   if(d.startsWith('HOLD')) return 'y';
   return 'r';
 }
-function fmt$(n){return '$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function fmt$(n){return '$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}
 function fmtR(n){return(+n).toFixed(2)+'×'}
 function fmtPct(n){return(n*100).toFixed(1)+'%'}
-function trendArrow(st){return st==='IMPROVING'?'↑':st==='DECLINING'?'↓':'→'}
 function trendCls(st){return st==='IMPROVING'?'trend-up':st==='DECLINING'?'trend-dn':'trend-fl'}
+
+function populateWindowSelectors(){
+  const dates=db.entries.map(e=>e.date);
+  ['win-start','dec-start'].forEach(id=>{
+    const el=document.getElementById(id);if(!el)return;
+    const cur=el.value;
+    el.innerHTML='<option value="">Most recent 4 weeks</option>'+
+      dates.slice(0,-3).map(d=>`<option value="${d}">${d}</option>`).join('');
+    if(cur) el.value=cur;
+  });
+}
 
 function showTab(t){
   ['entry','window','decision','history','settings'].forEach(x=>{
@@ -339,33 +382,26 @@ function showTab(t){
   document.querySelectorAll('.tab').forEach((b,i)=>{
     b.classList.toggle('active',['entry','window','decision','history','settings'][i]===t);
   });
-  if(t==='window') renderWindow();
-  if(t==='decision') renderDecision();
+  if(t==='window'){populateWindowSelectors();renderWindow();}
+  if(t==='decision'){populateWindowSelectors();renderDecision();}
   if(t==='history') renderHistory();
   if(t==='settings') renderSettings();
 }
 
 function renderWindow(){
-  const entries=getLast4();
-  if(!entries.length){document.getElementById('win-content').innerHTML='<p style="color:var(--text3);font-size:13px">No data yet. Add entries on the Weekly Entry tab.</p>';return;}
+  const start=document.getElementById('win-start').value;
+  const entries=getWindow(start);
+  if(!entries.length){document.getElementById('win-content').innerHTML='<p style="color:var(--text3);font-size:13px">No data yet.</p>';return;}
   const rows=entries.map((e,i)=>{
     const mz=getMerZone(e.mer);
     return`<tr>
-      <td>${i+1}W</td>
-      <td>${e.date}</td>
-      <td>${fmt$(e.rev)}</td>
-      <td>${fmt$(e.newRev)}</td>
-      <td>${fmt$(e.repRev)}</td>
-      <td>${e.orders}</td>
-      <td>${e.newOrders}</td>
-      <td>${e.repOrders}</td>
+      <td>${i+1}W</td><td>${e.date}</td>
+      <td>${fmt$(e.rev)}</td><td>${fmt$(e.newRev)}</td><td>${fmt$(e.repRev||0)}</td>
+      <td>${e.newOrders}</td><td>${e.repOrders}</td><td>${e.orders}</td>
       <td>${fmtPct(e.repRate)}</td>
-      <td>${fmt$(e.aov)}</td>
-      <td>${fmt$(e.newAov)}</td>
-      <td>${fmt$(e.repAov)}</td>
-      <td>${fmt$(e.spend)}</td>
-      <td>${fmtR(e.mer)}</td>
-      <td>${fmtR(e.nrs)}</td>
+      <td>${fmt$(e.aov)}</td><td>${fmt$(e.newAov)}</td><td>${fmt$(e.repAov)}</td>
+      <td>${fmt$(e.spend)}</td><td>${fmt$(e.ppcRev||0)}</td>
+      <td>${fmtR(e.mer)}</td><td>${fmtR(e.adsMer)}</td><td>${fmtR(e.nrs)}</td>
       <td><span class="badge ${mz.cls}">${mz.status}</span></td>
     </tr>`;
   }).join('');
@@ -373,26 +409,29 @@ function renderWindow(){
     <thead><tr>
       <th>Win</th><th>Date</th>
       <th>Revenue</th><th>New Rev</th><th>Repeat Rev</th>
-      <th>Orders</th><th>New Ord</th><th>Repeat Ord</th><th>Repeat %</th>
-      <th>AOV</th><th>New AOV</th><th>Repeat AOV</th>
-      <th>Spend</th><th>MER</th><th>New Rev/Spend</th><th>MER Zone</th>
+      <th>New Ord</th><th>Rep Ord</th><th>Total Ord</th><th>Rep%</th>
+      <th>AOV</th><th>New AOV</th><th>Rep AOV</th>
+      <th>Spend</th><th>PPC Rev</th>
+      <th>Total MER</th><th>Ads MER</th><th>New Rev/Spend</th><th>MER Zone</th>
     </tr></thead>
     <tbody>${rows}</tbody>
   </table></div>`;
 }
 
 function renderDecision(){
-  const entries=getLast4();
-  if(entries.length<2){document.getElementById('dec-content').innerHTML='<div class="card"><p style="color:var(--text3);font-size:13px">Need at least 2 weeks of data.</p></div>';return;}
+  const start=document.getElementById('dec-start').value;
+  const entries=getWindow(start);
+  if(entries.length<2){document.getElementById('dec-content').innerHTML='<div class="card"><p style="color:var(--text3);font-size:13px">Need at least 2 weeks of data in this window.</p></div>';return;}
   const d=calcDecision(entries);
   const cl=decCls(d.dec);
   const last=entries[entries.length-1];
+  const dateRange=`${entries[0].date} — ${last.date}`;
 
   const signalCards=`<div class="signal-grid">
     <div class="signal-card ${d.merZone.status==='FAIL'?'sig-override':d.merZone.status==='WEAK'?'sig-warning':d.merZone.status==='STRONG'?'sig-ok':'sig-neutral'}">
-      <div class="signal-label">4W Avg MER ${['FAIL','WEAK'].includes(d.merZone.status)?'<span class="driver-tag">DRIVER</span>':''}</div>
+      <div class="signal-label">4W Avg Total MER ${['FAIL','WEAK'].includes(d.merZone.status)?'<span class="driver-tag">DRIVER</span>':''}</div>
       <div class="signal-val" style="color:${d.merZone.status==='STRONG'?'var(--green)':d.merZone.status==='ACCEPTABLE'?'var(--blue)':d.merZone.status==='WEAK'?'var(--amber)':'var(--red)'}">${fmtR(d.avgMer)}</div>
-      <div><span class="badge ${d.merZone.cls}">${d.merZone.status}</span></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="badge ${d.merZone.cls}">${d.merZone.status}</span><span class="badge bb">Ads: ${fmtR(d.avgAdsMer)}</span></div>
     </div>
     <div class="signal-card ${d.merTrendSt==='DECLINING'?'sig-warning':d.merTrendSt==='IMPROVING'?'sig-ok':'sig-neutral'}">
       <div class="signal-label">MER Trend W4 vs W1 ${d.merTrendSt==='DECLINING'?'<span class="driver-tag">DRIVER</span>':''}</div>
@@ -415,24 +454,24 @@ function renderDecision(){
     <div class="card-title">Active Signal Drivers</div>
     ${d.drivers.map(dr=>`<div style="display:flex;gap:10px;align-items:flex-start;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px">
       <span class="badge ${dr.severity==='override'?'br':'by'}" style="min-width:90px;text-align:center;flex-shrink:0">${dr.signal}</span>
-      <span style="font-weight:500;color:var(--text);min-width:100px;font-family:'IBM Plex Mono',monospace">${dr.value}</span>
+      <span style="font-weight:500;color:var(--text);min-width:110px;font-family:'IBM Plex Mono',monospace">${dr.value}</span>
       <span style="color:var(--text3);line-height:1.5">${dr.reason}</span>
     </div>`).join('')}
   </div>`:'';
 
-  // Trend summary table
   const trendRows=entries.map((e,i)=>`<tr>
     <td>${e.date}</td>
     <td>${fmt$(e.rev)}</td>
     <td class="${trendCls(i>0?(e.mer>entries[i-1].mer?'IMPROVING':'DECLINING'):'FLAT')}">${fmtR(e.mer)}</td>
+    <td class="${trendCls(i>0?(e.adsMer>entries[i-1].adsMer?'IMPROVING':'DECLINING'):'FLAT')}">${fmtR(e.adsMer)}</td>
     <td class="${trendCls(i>0?(e.aov>entries[i-1].aov?'IMPROVING':'DECLINING'):'FLAT')}">${fmt$(e.aov)}</td>
     <td class="${trendCls(i>0?(e.nrs>entries[i-1].nrs?'IMPROVING':'DECLINING'):'FLAT')}">${fmtR(e.nrs)}</td>
     <td>${fmtPct(e.repRate)}</td>
-    <td class="${trendCls(i>0?(e.repRate>entries[i-1].repRate?'IMPROVING':'DECLINING'):'FLAT')}">${fmtPct(e.repRate)}</td>
+    <td>${fmt$(e.spend)}</td>
   </tr>`).join('');
 
   document.getElementById('dec-content').innerHTML=`
-    <div class="hint">MER Floor: <strong>${cfg().merFloor}×</strong> &nbsp;·&nbsp; MER Acceptable: <strong>${cfg().merAccept}×</strong> &nbsp;·&nbsp; MER Strong: <strong>${cfg().merStrong}×</strong> &nbsp;·&nbsp; MER Stability: <strong>${d.stability}</strong></div>
+    <div class="hint">Period: <strong>${dateRange}</strong> &nbsp;·&nbsp; MER Floor: <strong>${cfg().merFloor}×</strong> &nbsp;·&nbsp; MER Strong: <strong>${cfg().merStrong}×</strong> &nbsp;·&nbsp; Stability: <strong>${d.stability}</strong></div>
     <div class="card">
       <div class="card-title">Signal Dashboard</div>
       ${signalCards}
@@ -443,8 +482,12 @@ function renderDecision(){
       </div>
       <div class="action-box">
         <div class="action-row">
-          <span class="action-label">MER — Last Week</span>
+          <span class="action-label">Total MER — Last Week</span>
           <span class="action-val">${fmtR(last.mer)} &nbsp;<span class="badge ${getMerZone(last.mer).cls}">${getMerZone(last.mer).status}</span></span>
+        </div>
+        <div class="action-row">
+          <span class="action-label">Ads MER — Last Week</span>
+          <span class="action-val">${fmtR(last.adsMer)} &nbsp;<span class="badge bb">PPC Revenue / Spend</span></span>
         </div>
         <div class="action-row">
           <span class="action-label">New Revenue / Spend</span>
@@ -456,29 +499,15 @@ function renderDecision(){
         </div>
         <div class="action-row">
           <span class="action-label">AOV — Last Week</span>
-          <span class="action-val">${fmt$(last.aov)} &nbsp;New: ${fmt$(last.newAov)} &nbsp;Repeat: ${fmt$(last.repAov)}</span>
+          <span class="action-val">Total: ${fmt$(last.aov)} &nbsp;New: ${fmt$(last.newAov)} &nbsp;Repeat: ${fmt$(last.repAov)}</span>
         </div>
       </div>
     </div>
     <div class="card">
       <div class="card-title">4-Week Trend Detail</div>
       <div class="tbl-wrap"><table class="tbl">
-        <thead><tr><th>Date</th><th>Revenue</th><th>MER</th><th>AOV</th><th>New Rev/Spend</th><th>Rep Rate</th><th>Rep Rate Trend</th></tr></thead>
+        <thead><tr><th>Date</th><th>Revenue</th><th>Total MER</th><th>Ads MER</th><th>AOV</th><th>New Rev/Spend</th><th>Rep Rate</th><th>Spend</th></tr></thead>
         <tbody>${trendRows}</tbody>
-      </table></div>
-    </div>
-    <div class="card">
-      <div class="card-title">Decision Reference</div>
-      <div class="tbl-wrap"><table class="tbl">
-        <thead><tr><th>MER Zone</th><th>MER Trend</th><th>Decision</th><th>What it means</th></tr></thead>
-        <tbody>
-          <tr><td>STRONG</td><td>IMPROVING</td><td><span class="badge bg">SCALE</span></td><td>Business is healthy and getting better. Ad spend can grow.</td></tr>
-          <tr><td>STRONG</td><td>FLAT</td><td><span class="badge by">HOLD — STRONG</span></td><td>Healthy but not improving. Hold spend, optimize product/offer.</td></tr>
-          <tr><td>ACCEPTABLE</td><td>ANY</td><td><span class="badge by">HOLD</span></td><td>Profitable but thin buffer. Do not scale until MER improves.</td></tr>
-          <tr><td>WEAK</td><td>ANY</td><td><span class="badge by">CAUTION</span></td><td>MER compressing. Investigate AOV, repeat rate, and spend mix.</td></tr>
-          <tr><td>ANY</td><td>DECLINING</td><td><span class="badge by">CAUTION</span></td><td>Trend is the warning. Even if MER is OK today, it is heading down.</td></tr>
-          <tr><td>FAIL</td><td>ANY</td><td><span class="badge br">INVESTIGATE</span></td><td>MER below floor. Cut incremental spend. Find the driver immediately.</td></tr>
-        </tbody>
       </table></div>
     </div>`;
 }
@@ -494,22 +523,17 @@ function renderHistory(){
   const rows=entries.slice().reverse().map(e=>{
     const mz=getMerZone(e.mer);
     return`<tr>
-      <td>${e.date}</td>
-      <td>${fmt$(e.rev)}</td>
-      <td>${fmt$(e.newRev)}</td>
-      <td>${fmt$(e.repRev)}</td>
-      <td>${e.orders}</td>
-      <td>${fmtPct(e.repRate)}</td>
-      <td>${fmt$(e.aov)}</td>
-      <td>${fmt$(e.spend)}</td>
-      <td>${fmtR(e.mer)}</td>
-      <td>${fmtR(e.nrs)}</td>
+      <td>${e.date}</td><td>${fmt$(e.rev)}</td><td>${fmt$(e.newRev)}</td><td>${fmt$(e.repRev||0)}</td>
+      <td>${e.newOrders}</td><td>${e.repOrders}</td><td>${e.orders}</td>
+      <td>${fmtPct(e.repRate)}</td><td>${fmt$(e.aov)}</td>
+      <td>${fmt$(e.spend)}</td><td>${fmt$(e.ppcRev||0)}</td>
+      <td>${fmtR(e.mer)}</td><td>${fmtR(e.adsMer)}</td>
       <td><span class="badge ${mz.cls}">${mz.status}</span></td>
       <td><button class="btn btn-del" onclick="delEntry('${e.id}')">Del</button></td>
     </tr>`;
   }).join('');
   document.getElementById('hist-content').innerHTML=`<div class="tbl-wrap"><table class="tbl">
-    <thead><tr><th>Date</th><th>Revenue</th><th>New Rev</th><th>Repeat Rev</th><th>Orders</th><th>Rep%</th><th>AOV</th><th>Spend</th><th>MER</th><th>New/Spend</th><th>Zone</th><th></th></tr></thead>
+    <thead><tr><th>Date</th><th>Revenue</th><th>New Rev</th><th>Rep Rev</th><th>New Ord</th><th>Rep Ord</th><th>Total Ord</th><th>Rep%</th><th>AOV</th><th>Spend</th><th>PPC Rev</th><th>Total MER</th><th>Ads MER</th><th>Zone</th><th></th></tr></thead>
     <tbody>${rows}</tbody>
   </table></div>`;
 }
@@ -518,18 +542,254 @@ function delEntry(id){db.entries=db.entries.filter(e=>e.id!==id);save();renderHi
 
 function exportCSV(){
   const entries=db.entries.map(calcEntry);
-  const hdr='Date,Revenue,New Revenue,Repeat Revenue,Orders,New Orders,Repeat Orders,Repeat Rate,AOV,New AOV,Repeat AOV,Spend,MER,New Rev/Spend,MER Zone';
-  const rows=entries.map(e=>{const mz=getMerZone(e.mer);return`${e.date},${e.rev},${e.newRev},${e.repRev},${e.orders},${e.newOrders},${e.repOrders},${fmtPct(e.repRate)},${e.aov.toFixed(2)},${e.newAov.toFixed(2)},${e.repAov.toFixed(2)},${e.spend},${e.mer.toFixed(2)},${e.nrs.toFixed(2)},${mz.status}`;});
+  const hdr='Date,Revenue,New Revenue,Repeat Revenue,New Orders,Repeat Orders,Total Orders,Repeat Rate,AOV,New AOV,Repeat AOV,Spend,PPC Revenue,Total MER,Ads MER,New Rev/Spend,MER Zone';
+  const rows=entries.map(e=>{const mz=getMerZone(e.mer);return`${e.date},${e.rev},${e.newRev||0},${e.repRev||0},${e.newOrders||0},${e.repOrders||0},${e.orders},${fmtPct(e.repRate)},${e.aov.toFixed(2)},${e.newAov.toFixed(2)},${e.repAov.toFixed(2)},${e.spend},${e.ppcRev||0},${e.mer.toFixed(2)},${e.adsMer.toFixed(2)},${e.nrs.toFixed(2)},${mz.status}`;});
   const a=document.createElement('a');
   a.href='data:text/csv;charset=utf-8,'+encodeURIComponent([hdr,...rows].join('\n'));
-  a.download='abolox_weekly_tracker.csv';a.click();
+  a.download='weekly_tracker.csv';a.click();
+}
+
+function exportDecisionPDF(){
+  const start=document.getElementById('dec-start').value;
+  const entries=getWindow(start);
+  if(entries.length<2){alert('Need at least 2 weeks of data.');return;}
+  const d=calcDecision(entries);
+  const last=entries[entries.length-1];
+  const dateRange=`${entries[0].date} to ${last.date}`;
+  const client=cfg().clientName||'Client';
+  const preparer=cfg().preparedBy||'Modonix';
+  const today=new Date().toISOString().slice(0,10);
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'letter'});
+  const W=215.9,H=279.4;
+  const ml=15,mr=15,usableW=W-ml-mr;
+  let y=0;
+
+  // Header bar
+  doc.setFillColor(13,15,17);
+  doc.rect(0,0,W,22,'F');
+  doc.setFillColor(99,102,241);
+  doc.rect(0,22,W,1,'F');
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(8);
+  doc.setTextColor(255,255,255);
+  doc.text('MODONIX  ·  PREPARED FOR: '+client.toUpperCase(),ml,14);
+  doc.setFont('helvetica','normal');
+  doc.setTextColor(139,143,154);
+  doc.text('WEEKLY BUSINESS TRACKER  ·  4-WEEK DECISION REPORT',W-mr,14,{align:'right'});
+  y=32;
+
+  // Title block
+  doc.setFont('helvetica','normal');
+  doc.setFontSize(9);
+  doc.setTextColor(113,128,144);
+  doc.text('PREPARED BY',ml,y);
+  doc.text('PREPARED FOR',W/2+2,y);
+  y+=5;
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(12);
+  doc.setTextColor(13,15,17);
+  doc.text(preparer,ml,y);
+  doc.text(client,W/2+2,y);
+  y+=5;
+  doc.setFont('helvetica','normal');
+  doc.setFontSize(8);
+  doc.setTextColor(113,128,144);
+  doc.text('E-Commerce & Digital Commerce Consulting',ml,y);
+  doc.text(today,W/2+2,y);
+  y+=8;
+  doc.setDrawColor(220,226,234);
+  doc.setLineWidth(0.3);
+  doc.line(ml,y,W-mr,y);
+  y+=6;
+
+  doc.setFont('helvetica','normal');
+  doc.setFontSize(9);
+  doc.setTextColor(113,128,144);
+  doc.text('Period: '+dateRange,ml,y);
+  y+=5;
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(18);
+  doc.setTextColor(13,15,17);
+  doc.text('4-Week Decision Report',ml,y);
+  y+=7;
+  doc.setFont('helvetica','normal');
+  doc.setFontSize(9);
+  doc.setTextColor(113,128,144);
+  doc.text('Weekly Business Tracker — MER & Revenue Quality Analysis',ml,y);
+  y+=10;
+  doc.setLineWidth(0.3);
+  doc.line(ml,y,W-mr,y);
+  y+=8;
+
+  // Decision banner
+  const decColor=d.dec.startsWith('SCALE')?[34,197,94]:d.dec.startsWith('HOLD')?[245,158,11]:[239,68,68];
+  const decBg=d.dec.startsWith('SCALE')?[240,255,244]:d.dec.startsWith('HOLD')?[255,251,235]:[255,245,245];
+  doc.setFillColor(...decBg);
+  doc.setDrawColor(...decColor);
+  doc.setLineWidth(0.5);
+  doc.roundedRect(ml,y,usableW,18,2,2,'FD');
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(12);
+  doc.setTextColor(...decColor);
+  doc.text(d.dec,ml+5,y+8);
+  doc.setFont('helvetica','normal');
+  doc.setFontSize(8);
+  doc.setTextColor(45,55,72);
+  const ratLines=doc.splitTextToSize(d.rationale,usableW-10);
+  doc.text(ratLines,ml+5,y+13);
+  y+=22;
+
+  // Signal cards — 4 across
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(8);
+  doc.setTextColor(113,128,144);
+  doc.text('SIGNAL DASHBOARD',ml,y);
+  y+=5;
+  const cardW=(usableW-9)/4;
+  const cards=[
+    {label:'4W AVG TOTAL MER',val:fmtR(d.avgMer),sub:d.merZone.status,subColor:d.merZone.status==='STRONG'?[34,197,94]:d.merZone.status==='ACCEPTABLE'?[59,130,246]:d.merZone.status==='WEAK'?[245,158,11]:[239,68,68]},
+    {label:'MER TREND W4 VS W1',val:d.merTrend+'%',sub:d.merTrendSt,subColor:d.merTrendSt==='IMPROVING'?[34,197,94]:d.merTrendSt==='DECLINING'?[239,68,68]:[113,128,144]},
+    {label:'AOV TREND',val:fmt$(last.aov),sub:d.aovSt,subColor:d.aovSt==='IMPROVING'?[34,197,94]:d.aovSt==='DECLINING'?[239,68,68]:[113,128,144]},
+    {label:'NEW REV / SPEND',val:fmtR(last.nrs),sub:d.nrsSt,subColor:d.nrsSt==='IMPROVING'?[34,197,94]:d.nrsSt==='DECLINING'?[239,68,68]:[113,128,144]},
+  ];
+  cards.forEach((c,i)=>{
+    const cx=ml+i*(cardW+3);
+    doc.setFillColor(248,249,250);
+    doc.setDrawColor(220,226,234);
+    doc.setLineWidth(0.3);
+    doc.roundedRect(cx,y,cardW,20,2,2,'FD');
+    doc.setFont('helvetica','normal');
+    doc.setFontSize(7);
+    doc.setTextColor(113,128,144);
+    doc.text(c.label,cx+3,y+5);
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(11);
+    doc.setTextColor(13,15,17);
+    doc.text(c.val,cx+3,y+12);
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(7);
+    doc.setTextColor(...c.subColor);
+    doc.text(c.sub,cx+3,y+18);
+  });
+  y+=25;
+
+  // Active drivers
+  if(d.drivers.length){
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(8);
+    doc.setTextColor(113,128,144);
+    doc.text('ACTIVE SIGNAL DRIVERS',ml,y);
+    y+=5;
+    d.drivers.forEach(dr=>{
+      const bgColor=dr.severity==='override'?[255,245,245]:[255,251,235];
+      const bdColor=dr.severity==='override'?[239,68,68]:[245,158,11];
+      doc.setFillColor(...bgColor);
+      doc.setDrawColor(...bdColor);
+      doc.setLineWidth(0.4);
+      doc.roundedRect(ml,y,usableW,10,1,1,'FD');
+      doc.setFont('helvetica','bold');
+      doc.setFontSize(7);
+      doc.setTextColor(...bdColor);
+      doc.text(dr.signal.toUpperCase(),ml+3,y+4);
+      doc.setFont('helvetica','bold');
+      doc.setFontSize(7);
+      doc.setTextColor(13,15,17);
+      doc.text(dr.value,ml+35,y+4);
+      doc.setFont('helvetica','normal');
+      doc.setFontSize(7);
+      doc.setTextColor(45,55,72);
+      const reasonLines=doc.splitTextToSize(dr.reason,usableW-85);
+      doc.text(reasonLines[0],ml+70,y+4);
+      y+=12;
+    });
+  }
+
+  // Key metrics
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(8);
+  doc.setTextColor(113,128,144);
+  doc.text('KEY METRICS — LAST WEEK',ml,y);
+  y+=5;
+  const metrics=[
+    ['Total MER',fmtR(last.mer)],
+    ['Ads MER (PPC Rev / Spend)',fmtR(last.adsMer)],
+    ['New Revenue / Spend',fmtR(last.nrs)],
+    ['Repeat Rate',fmtPct(last.repRate)+' ('+last.repOrders+' of '+last.orders+' orders)'],
+    ['AOV',fmt$(last.aov)+' · New: '+fmt$(last.newAov)+' · Repeat: '+fmt$(last.repAov)],
+    ['Ad Spend',fmt$(last.spend)],
+    ['PPC Revenue',fmt$(last.ppcRev||0)],
+    ['Total Revenue',fmt$(last.rev)],
+  ];
+  metrics.forEach((m,i)=>{
+    const bg=i%2===0?[255,255,255]:[248,249,250];
+    doc.setFillColor(...bg);
+    doc.setDrawColor(220,226,234);
+    doc.setLineWidth(0.2);
+    doc.rect(ml,y,usableW,7,'FD');
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(8);
+    doc.setTextColor(45,55,72);
+    doc.text(m[0],ml+3,y+5);
+    doc.setFont('helvetica','normal');
+    doc.setTextColor(13,15,17);
+    doc.text(m[1],W-mr-3,y+5,{align:'right'});
+    y+=7;
+  });
+  y+=6;
+
+  // 4-week trend table
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(8);
+  doc.setTextColor(113,128,144);
+  doc.text('4-WEEK TREND',ml,y);
+  y+=5;
+  const cols=['DATE','REVENUE','TOTAL MER','ADS MER','AOV','NEW REV/SPEND','REP RATE','SPEND'];
+  const colW=[24,26,22,20,22,26,18,20];
+  doc.setFillColor(13,15,17);
+  doc.rect(ml,y,usableW,7,'F');
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(7);
+  doc.setTextColor(255,255,255);
+  let cx=ml;
+  cols.forEach((c,i)=>{doc.text(c,cx+2,y+5);cx+=colW[i];});
+  y+=7;
+  entries.forEach((e,ri)=>{
+    const bg=ri%2===0?[255,255,255]:[248,249,250];
+    doc.setFillColor(...bg);
+    doc.setDrawColor(220,226,234);
+    doc.setLineWidth(0.2);
+    doc.rect(ml,y,usableW,7,'FD');
+    doc.setFont('helvetica','normal');
+    doc.setFontSize(7);
+    doc.setTextColor(45,55,72);
+    const row=[e.date,fmt$(e.rev),fmtR(e.mer),fmtR(e.adsMer),fmt$(e.aov),fmtR(e.nrs),fmtPct(e.repRate),fmt$(e.spend)];
+    cx=ml;
+    row.forEach((v,i)=>{doc.text(String(v),cx+2,y+5);cx+=colW[i];});
+    y+=7;
+  });
+
+  // Footer
+  doc.setFillColor(240,242,245);
+  doc.rect(0,H-15,W,15,'F');
+  doc.setFont('helvetica','normal');
+  doc.setFontSize(7);
+  doc.setTextColor(113,128,144);
+  doc.text('Confidential — Prepared by '+preparer+' for '+client,ml,H-7);
+  doc.text('Weekly Business Tracker · 4-Week Decision Report',W/2,H-7,{align:'center'});
+  doc.text(today,W-mr,H-7,{align:'right'});
+
+  doc.save('Weekly_Tracker_Decision_'+dateRange.replace(/ /g,'_')+'.pdf');
 }
 
 function renderSettings(){
+  document.getElementById('s-client').value=cfg().clientName||'';
+  document.getElementById('s-preparer').value=cfg().preparedBy||'Ahmed — Modonix';
   document.getElementById('s-mer-floor').value=cfg().merFloor;
-  document.getElementById('s-mer-strong').value=cfg().merStrong;
   document.getElementById('s-mer-accept').value=cfg().merAccept;
-  document.getElementById('entry-count').textContent=db.entries.length+' weeks saved';
+  document.getElementById('s-mer-strong').value=cfg().merStrong;
+  document.getElementById('entry-count').textContent=db.entries.length;
+  const th=cfg().merStrong;
   document.getElementById('mer-zone-table').innerHTML=`<div class="tbl-wrap" style="margin-bottom:16px"><table class="tbl">
     <thead><tr><th>MER Range</th><th>Zone</th><th>Meaning</th></tr></thead>
     <tbody>
@@ -542,13 +802,16 @@ function renderSettings(){
 }
 
 function updateSettings(){
+  cfg().clientName=document.getElementById('s-client').value.trim();
+  cfg().preparedBy=document.getElementById('s-preparer').value.trim();
   cfg().merFloor=parseFloat(document.getElementById('s-mer-floor').value)||10;
-  cfg().merStrong=parseFloat(document.getElementById('s-mer-strong').value)||12;
   cfg().merAccept=parseFloat(document.getElementById('s-mer-accept').value)||10;
+  cfg().merStrong=parseFloat(document.getElementById('s-mer-strong').value)||12;
   save();renderSettings();
 }
 
 document.getElementById('e-date').value=new Date().toISOString().slice(0,10);
+populateWindowSelectors();
 renderSettings();
 </script>
 </body>
