@@ -158,11 +158,11 @@ select option{background:var(--surface2)}
 <!-- 4-WEEK WINDOW -->
 <div id="tab-window" style="display:none">
   <div class="window-selector">
-    <div><label style="margin-bottom:4px">Starting Week</label>
+    <div><label style="margin-bottom:4px">Ending Week</label>
       <select id="win-start" onchange="renderWindow()"></select>
     </div>
     <div style="font-size:12px;color:var(--text3);font-family:'IBM Plex Mono',monospace;padding-bottom:8px">
-      Shows 4 weeks from selected start. Defaults to most recent 4.
+      Select any week — shows that week plus the 3 weeks before it. Defaults to most recent week.
     </div>
   </div>
   <div class="card">
@@ -174,7 +174,7 @@ select option{background:var(--surface2)}
 <!-- DECISION -->
 <div id="tab-decision" style="display:none">
   <div class="window-selector">
-    <div><label style="margin-bottom:4px">Starting Week</label>
+    <div><label style="margin-bottom:4px">Ending Week</label>
       <select id="dec-start" onchange="renderDecision()"></select>
     </div>
     <button class="btn-pdf" onclick="exportDecisionPDF()">Export PDF</button>
@@ -296,12 +296,13 @@ function saveEntry(){
   document.getElementById('auto-calc').style.display='none';
 }
 
-function getWindow(startDate){
+function getWindow(endDate){
   const all=db.entries.map(calcEntry);
-  if(!startDate||!all.length) return all.slice(-4);
-  const idx=all.findIndex(e=>e.date===startDate);
+  if(!endDate||!all.length) return all.slice(-4);
+  const idx=all.findIndex(e=>e.date===endDate);
   if(idx<0) return all.slice(-4);
-  return all.slice(idx,idx+4);
+  const start=Math.max(0,idx-3);
+  return all.slice(start,idx+1);
 }
 
 function getMerZone(mer){
@@ -370,7 +371,7 @@ function populateWindowSelectors(){
     const el=document.getElementById(id);if(!el)return;
     const cur=el.value;
     el.innerHTML='<option value="">Most recent 4 weeks</option>'+
-      dates.slice(0,-3).map(d=>`<option value="${d}">${d}</option>`).join('');
+      dates.map(d=>`<option value="${d}">${d}</option>`).join('');
     if(cur) el.value=cur;
   });
 }
