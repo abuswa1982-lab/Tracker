@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Weekly Business Tracker — Modonix</title>
+<title>Weekly Business Tracker — Abolox</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -522,7 +522,7 @@ function exportCSV(){
   const rows=entries.map(e=>{const mz=getMerZone(e.mer);return`${e.date},${e.rev},${e.newRev},${e.repRev},${e.orders},${e.newOrders},${e.repOrders},${fmtPct(e.repRate)},${e.aov.toFixed(2)},${e.newAov.toFixed(2)},${e.repAov.toFixed(2)},${e.spend},${e.mer.toFixed(2)},${e.nrs.toFixed(2)},${mz.status}`;});
   const a=document.createElement('a');
   a.href='data:text/csv;charset=utf-8,'+encodeURIComponent([hdr,...rows].join('\n'));
-  a.download='Modonix_weekly_tracker.csv';a.click();
+  a.download='abolox_weekly_tracker.csv';a.click();
 }
 
 function renderSettings(){
