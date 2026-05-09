@@ -11,10 +11,22 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.5}
 body{min-height:100vh;padding:0 0 60px}
-.header{border-bottom:1px solid var(--border);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--bg);z-index:100}
+.header{border-bottom:1px solid var(--border);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--bg);z-index:100;flex-wrap:wrap;gap:12px}
 .header-logo{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:500;color:var(--text2);letter-spacing:.1em;text-transform:uppercase}
 .header-logo span{color:var(--accent)}
+.header-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .header-tag{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);border:1px solid var(--border);padding:3px 8px;border-radius:4px}
+.btn-header{padding:6px 12px;font-size:11px;font-family:'IBM Plex Mono',monospace;font-weight:500;cursor:pointer;border-radius:var(--radius);text-transform:uppercase;letter-spacing:.05em;display:inline-flex;align-items:center;gap:5px;transition:all .15s}
+.btn-header.export{background:transparent;color:var(--green);border:1px solid var(--green-border)}
+.btn-header.export:hover{background:var(--green-bg)}
+.btn-header.import{background:transparent;color:var(--blue);border:1px solid var(--blue-border)}
+.btn-header.import:hover{background:var(--blue-bg)}
+.backup-banner{background:var(--amber-bg);border-bottom:1px solid var(--amber-border);padding:10px 24px;font-size:12px;color:var(--amber);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace}
+.backup-banner.hidden{display:none}
+.backup-banner-text{flex:1;min-width:200px}
+.backup-banner button{background:var(--amber);color:#0e0f11;border:none;padding:5px 12px;border-radius:4px;font-size:11px;font-family:'IBM Plex Mono',monospace;font-weight:600;cursor:pointer;text-transform:uppercase;letter-spacing:.05em}
+.backup-banner button:hover{background:#fbbf24}
+.backup-banner .dismiss{background:transparent;color:var(--amber);border:1px solid var(--amber-border)}
 .container{max-width:1100px;margin:0 auto;padding:24px 24px 0}
 .tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:24px;overflow-x:auto}
 .tab{padding:10px 18px;font-size:12px;font-family:'IBM Plex Mono',monospace;font-weight:500;cursor:pointer;border:none;background:none;color:var(--text3);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;text-transform:uppercase;letter-spacing:.06em;transition:color .15s}
@@ -36,6 +48,7 @@ select option{background:var(--surface2)}
 .btn-pri{background:var(--accent);color:#fff;border:none}.btn-pri:hover{background:#5558e8}
 .btn-sec{background:transparent;color:var(--text2);border:1px solid var(--border2)}.btn-sec:hover{color:var(--text);background:var(--surface2)}
 .btn-del{background:transparent;color:var(--red);border:1px solid var(--red-border);padding:4px 10px;font-size:11px}.btn-del:hover{background:var(--red-bg)}
+.btn-edit{background:transparent;color:var(--blue);border:1px solid var(--blue-border);padding:4px 10px;font-size:11px}.btn-edit:hover{background:var(--blue-bg)}
 .btn-pdf{background:transparent;color:var(--green);border:1px solid var(--green-border);padding:7px 14px;font-size:12px;font-family:'IBM Plex Mono',monospace;font-weight:500;cursor:pointer;border-radius:var(--radius);text-transform:uppercase;letter-spacing:.05em}.btn-pdf:hover{background:var(--green-bg)}
 .mc{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:14px}
 .mc-l{font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
@@ -89,19 +102,47 @@ select option{background:var(--surface2)}
 .trend-up{color:var(--green)}.trend-dn{color:var(--red)}.trend-fl{color:var(--text3)}
 .window-selector{display:flex;gap:10px;align-items:flex-end;margin-bottom:16px;flex-wrap:wrap}
 .window-selector select{width:160px}
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);display:none;align-items:center;justify-content:center;z-index:1000}
+.modal-overlay.show{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:24px;min-width:380px;max-width:90vw}
+.modal h2{font-size:14px;font-family:'IBM Plex Mono',monospace;color:var(--accent);margin-bottom:14px;text-transform:uppercase;letter-spacing:.06em}
+.modal p{color:var(--text);font-size:13px;line-height:1.6;margin-bottom:14px}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--surface);border:1px solid var(--border2);border-left:3px solid var(--accent);padding:12px 18px;border-radius:var(--radius);font-size:13px;font-family:'IBM Plex Mono',monospace;box-shadow:0 4px 20px rgba(0,0,0,0.5);opacity:0;transform:translateY(20px);transition:all .25s;z-index:2000;max-width:400px}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast.error{border-left-color:var(--red);color:var(--red)}
+.toast.success{border-left-color:var(--green);color:var(--green)}
+button.btn.solid-danger{background:var(--red);color:#fff;border-color:var(--red);font-weight:600}
+button.btn.solid-danger:hover{background:#d73a32;border-color:#d73a32}
 </style>
 </head>
 <body>
+
 <div class="header">
   <div class="header-logo"><span>Weekly</span> Tracker</div>
-  <div class="header-tag">Weekly Business Tracker</div>
+  <div class="header-right">
+    <select id="client-switcher" onchange="switchClient(this.value)" style="background:var(--surface2);color:var(--text);border:1px solid var(--border2);padding:6px 10px;border-radius:var(--radius);font-family:'IBM Plex Mono',monospace;font-size:11px;min-width:140px;text-transform:uppercase;letter-spacing:.04em;cursor:pointer"></select>
+    <button class="btn-header" onclick="quickAddClient()" title="Add a new client" style="background:transparent;color:var(--accent);border:1px solid rgba(99,102,241,0.3)">+ Client</button>
+    <span class="header-tag">v3 · AI Auditor</span>
+    <button class="btn-header export" onclick="exportBackup()" title="Download all clients' data as JSON — do this weekly">⬇ Export Backup</button>
+    <button class="btn-header import" onclick="document.getElementById('backup-import').click()" title="Restore data from a backup JSON file">⬆ Import Backup</button>
+    <input type="file" id="backup-import" style="display:none" accept=".json" onchange="importBackup(event)">
+  </div>
 </div>
+
+<div id="backup-banner" class="backup-banner hidden">
+  <div class="backup-banner-text"><strong id="banner-text"></strong></div>
+  <button onclick="exportBackup()">⬇ Backup Now</button>
+  <button class="dismiss" onclick="dismissBanner()">Remind Tomorrow</button>
+</div>
+
 <div class="container">
 <div class="tabs">
   <button class="tab active" onclick="showTab('entry')">Weekly Entry</button>
   <button class="tab" onclick="showTab('window')">4-Week Window</button>
   <button class="tab" onclick="showTab('decision')">Decision Layer</button>
   <button class="tab" onclick="showTab('history')">History</button>
+  <button class="tab" onclick="showTab('audit')">AI Audit</button>
   <button class="tab" onclick="showTab('settings')">Settings</button>
 </div>
 
@@ -198,16 +239,146 @@ select option{background:var(--surface2)}
   <div class="card"><div id="hist-content"></div></div>
 </div>
 
+<!-- AI AUDIT -->
+<div id="tab-audit" style="display:none">
+  <div class="card">
+    <div class="card-title">Audit Setup</div>
+    <p style="font-size:12px;color:var(--text3);line-height:1.6;margin-bottom:14px;font-family:'IBM Plex Mono',monospace">Senior business auditor reads your weekly tracker data, sees what the rules engine missed (cross-signal patterns, retention vs acquisition dynamics, AOV/MER interactions), returns operator-grade analysis. Configure API key in Settings.</p>
+
+    <div class="g3" style="margin-bottom:14px">
+      <div>
+        <label>Client</label>
+        <select id="aud-client" onchange="onAuditClientChange()"></select>
+      </div>
+      <div>
+        <label>Primary Period</label>
+        <select id="aud-period" onchange="onAuditPeriodChange()">
+          <option value="4w">Last 4 weeks</option>
+          <option value="8w">Last 8 weeks</option>
+          <option value="12w">Last 12 weeks</option>
+          <option value="custom">Custom date range</option>
+        </select>
+      </div>
+      <div></div>
+    </div>
+
+    <div class="g3" style="margin-bottom:14px">
+      <div id="aud-custom-start-wrap" style="display:none">
+        <label>Start Date</label>
+        <input type="date" id="aud-custom-start">
+      </div>
+      <div id="aud-custom-end-wrap" style="display:none">
+        <label>End Date</label>
+        <input type="date" id="aud-custom-end">
+      </div>
+    </div>
+
+    <div class="g3" style="margin-bottom:14px">
+      <div>
+        <label>Compare To</label>
+        <select id="aud-compare" onchange="onAuditCompareChange()">
+          <option value="none">No comparison</option>
+          <option value="prev">Previous equivalent period (auto)</option>
+          <option value="custom">Custom comparison range</option>
+        </select>
+      </div>
+      <div id="aud-comp-start-wrap" style="display:none">
+        <label>Compare Start</label>
+        <input type="date" id="aud-comp-start">
+      </div>
+      <div id="aud-comp-end-wrap" style="display:none">
+        <label>Compare End</label>
+        <input type="date" id="aud-comp-end">
+      </div>
+    </div>
+
+    <div style="margin-bottom:14px">
+      <label>Specific Question (optional)</label>
+      <input type="text" id="aud-question" placeholder="e.g. Why did MER fall in week 3? Or: Is repeat rate masking new-customer weakness?">
+    </div>
+
+    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+      <button class="btn btn-pri" id="aud-run-btn" onclick="runAudit()">▶ Run Audit</button>
+      <span id="aud-cost-preview" style="font-size:11px;color:var(--text3);font-family:'IBM Plex Mono',monospace"></span>
+      <span id="aud-status" style="font-size:12px;color:var(--text3);font-family:'IBM Plex Mono',monospace"></span>
+    </div>
+  </div>
+
+  <div class="card" id="aud-output-card" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+      <div class="card-title" style="margin-bottom:0">Audit Output</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-sec" onclick="copyAuditOutput()" style="font-size:11px;padding:6px 12px">📋 Copy</button>
+        <button class="btn btn-sec" onclick="saveAudit()" id="aud-save-btn" style="font-size:11px;padding:6px 12px">💾 Save to History</button>
+        <button class="btn-pdf" onclick="exportAuditPDF()" style="font-size:11px;padding:6px 12px">⬇ Export PDF</button>
+      </div>
+    </div>
+    <div id="aud-output" style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:18px;font-size:13px;line-height:1.7;color:var(--text);white-space:pre-wrap;font-family:'IBM Plex Sans',sans-serif;min-height:200px"></div>
+    <div id="aud-usage-info" style="font-size:11px;color:var(--text3);font-family:'IBM Plex Mono',monospace;margin-top:10px"></div>
+  </div>
+
+  <div class="card" id="aud-history-card">
+    <div class="card-title">Past Audits (this client)</div>
+    <div id="aud-history-list"></div>
+  </div>
+</div>
+
 <!-- SETTINGS -->
 <div id="tab-settings" style="display:none">
   <div class="card">
-    <div class="card-title">Client Information</div>
-    <div class="g2" style="margin-bottom:16px;max-width:500px">
-      <div><label>Client Name</label><input type="text" id="s-client" placeholder="e.g. Abolox LLC" oninput="updateSettings()"></div>
-      <div><label>Prepared By</label><input type="text" id="s-preparer" placeholder="e.g. Ahmed — Modonix" oninput="updateSettings()"></div>
+    <div class="card-title">AI Auditor Settings</div>
+    <p style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:14px">
+      The AI Audit tab uses your Anthropic API key to generate expert auditor analysis. Key is stored only in this browser. Get a key at <span style="font-family:'IBM Plex Mono',monospace">console.anthropic.com</span>.
+    </p>
+    <div class="g2" style="margin-bottom:12px;max-width:600px">
+      <div>
+        <label>Anthropic API Key</label>
+        <input type="password" id="s-api-key" placeholder="sk-ant-..." oninput="saveApiKey()">
+      </div>
+      <div>
+        <label>Model</label>
+        <select id="s-model" onchange="saveModel()">
+          <option value="claude-sonnet-4-5-20250929">Sonnet 4.5 (faster, cheaper)</option>
+          <option value="claude-opus-4-5">Opus 4.5 (deeper, pricier)</option>
+        </select>
+      </div>
+    </div>
+    <p style="font-size:11px;color:var(--text3);font-family:'IBM Plex Mono',monospace" id="ai-spend-info"></p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Backup &amp; Restore</div>
+    <p style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:14px">
+      <strong style="color:var(--amber)">Important:</strong> Your data lives only in this browser. If you clear browser data, switch computers, or your browser corrupts storage — it's gone unless you've exported a backup.
+      <br><br>
+      <strong style="color:var(--text)">Habit:</strong> Click "Export Backup" every Monday after entering the week's data. Save the JSON file to a cloud folder (Drive, Dropbox).
+    </p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn-header export" onclick="exportBackup()">⬇ Export Backup (All Clients)</button>
+      <button class="btn-header import" onclick="document.getElementById('backup-import-2').click()">⬆ Import Backup (JSON)</button>
+      <input type="file" id="backup-import-2" style="display:none" accept=".json" onchange="importBackup(event)">
+      <button class="btn btn-sec" onclick="exportActiveClientOnly()" style="font-size:11px;padding:6px 12px">Export Active Client Only</button>
+    </div>
+    <p style="font-size:11px;color:var(--text3);margin-top:10px;font-family:'IBM Plex Mono',monospace" id="last-backup-info"></p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Active Client</div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+      <span style="font-size:18px;font-weight:600;color:var(--text);font-family:'IBM Plex Mono',monospace" id="active-client-name"></span>
+      <button class="btn btn-edit" onclick="renameActiveClient()">Rename</button>
+      <button class="btn btn-del" onclick="deleteActiveClient()">Delete This Client</button>
+      <span style="margin-left:auto;color:var(--text3);font-size:11px;font-family:'IBM Plex Mono',monospace" id="client-count-info"></span>
     </div>
     <hr class="sep">
-    <div class="card-title">MER Thresholds</div>
+    <div class="card-title">Operator Information (global, all clients)</div>
+    <div style="max-width:500px;margin-bottom:8px">
+      <label>Prepared By</label>
+      <input type="text" id="s-preparer" placeholder="e.g. Ahmed — Modonix" oninput="updatePreparedBy()">
+      <p style="font-size:11px;color:var(--text3);margin-top:6px;font-family:'IBM Plex Mono',monospace">Used on all PDF reports for all clients.</p>
+    </div>
+    <hr class="sep">
+    <div class="card-title">MER Thresholds (this client only)</div>
     <div class="g3" style="margin-bottom:16px;max-width:600px">
       <div><label>MER Floor (×)</label><input type="number" id="s-mer-floor" step="0.5" oninput="updateSettings()"></div>
       <div><label>MER Acceptable (×)</label><input type="number" id="s-mer-accept" step="0.5" oninput="updateSettings()"></div>
@@ -215,605 +386,1359 @@ select option{background:var(--surface2)}
     </div>
     <div id="mer-zone-table"></div>
     <hr class="sep">
-    <div class="card-title">Data</div>
-    <p style="font-size:12px;color:var(--text3);margin-bottom:10px"><strong style="color:var(--text2)" id="entry-count"></strong> weeks saved in browser storage.</p>
-    <button class="btn btn-del" onclick="if(confirm('Delete ALL weekly tracker data?')){localStorage.removeItem('wt_v2');location.reload()}">Clear All Data</button>
+    <div class="card-title">Data (this client)</div>
+    <p style="font-size:12px;color:var(--text3);margin-bottom:10px"><strong style="color:var(--text2)" id="entry-count"></strong> weeks saved for this client.</p>
+    <hr class="sep">
+    <div class="card-title" style="color:var(--red)">Danger Zone</div>
+    <p style="font-size:12px;color:var(--text3);margin-bottom:10px">Permanent deletion of <strong style="color:var(--red)">ALL clients'</strong> data — entries, settings, audits, everything. Cannot be undone unless you have a backup file.</p>
+    <button class="btn btn-del" onclick="clearAllData()">Clear ALL Data (All Clients)</button>
   </div>
 </div>
 </div>
 
+<!-- CONFIRM MODAL -->
+<div class="modal-overlay" id="confirm-modal">
+  <div class="modal">
+    <h2 id="confirm-title">Confirm</h2>
+    <p id="confirm-message"></p>
+    <div id="confirm-typecheck-wrap" style="display:none">
+      <label style="margin-bottom:6px">Type <strong style="color:var(--red);font-family:'IBM Plex Mono',monospace">DELETE</strong> to confirm:</label>
+      <input type="text" id="confirm-typecheck" placeholder="DELETE">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-sec" id="confirm-no">Cancel</button>
+      <button class="btn solid-danger" id="confirm-yes" style="padding:8px 16px">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROMPT MODAL -->
+<div class="modal-overlay" id="prompt-modal">
+  <div class="modal">
+    <h2 id="prompt-title">Input</h2>
+    <p id="prompt-message" style="margin-bottom:6px"></p>
+    <input type="text" id="prompt-input" style="width:100%;margin-bottom:4px">
+    <div class="modal-actions">
+      <button class="btn btn-sec" id="prompt-cancel">Cancel</button>
+      <button class="btn btn-pri" id="prompt-ok">OK</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
-const SK='wt_v2';
-let db=JSON.parse(localStorage.getItem(SK)||'null')||{
-  settings:{merFloor:10,merStrong:12,merAccept:10,clientName:'',preparedBy:'Ahmed — Modonix'},
-  entries:[]
+// ============================================================================
+// STORAGE — v3 multi-client schema, auto-migrates from v2 (wt_v2 key)
+// ============================================================================
+const SK = 'wt_v3';
+const SK_LEGACY = 'wt_v2';
+const META_KEY = 'wt_v3_meta';
+const AI_KEY = 'wt_v3_ai';
+
+const DEFAULT_SETTINGS = { merFloor: 10, merAccept: 10, merStrong: 12 };
+const DEFAULT_CLIENT = () => ({
+  id: 'cli_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
+  name: 'New Client',
+  settings: { ...DEFAULT_SETTINGS },
+  entries: [],
+  audits: []
+});
+const DEFAULT_DB = () => {
+  const c = DEFAULT_CLIENT();
+  c.name = 'Client 1';
+  return { schemaVersion: 3, preparedBy: 'Ahmed — Modonix', activeClientId: c.id, clients: [c] };
 };
-function save(){localStorage.setItem(SK,JSON.stringify(db))}
-function cfg(){return db.settings}
 
-function calcEntry(e){
-  const orders=(e.newOrders||0)+(e.repOrders||0);
-  const aov=orders>0?e.rev/orders:0;
-  const newAov=(e.newOrders||0)>0?e.newRev/(e.newOrders||0):0;
-  const repAov=(e.repOrders||0)>0?e.repRev/(e.repOrders||0):0;
-  const repRate=orders>0?(e.repOrders||0)/orders:0;
-  const mer=e.spend>0?e.rev/e.spend:0;
-  const adsMer=e.spend>0?(e.ppcRev||0)/e.spend:0;
-  const nrs=e.spend>0?(e.newRev||0)/e.spend:0;
-  const newPct=e.rev>0?(e.newRev||0)/e.rev:0;
-  const repPct=e.rev>0?(e.repRev||0)/e.rev:0;
-  return{...e,orders,aov,newAov,repAov,repRate,mer,adsMer,nrs,newPct,repPct};
-}
-
-function calcAuto(){
-  const rev=parseFloat(document.getElementById('e-rev').value)||0;
-  const newRev=parseFloat(document.getElementById('e-newrev').value)||0;
-  const repRev=parseFloat(document.getElementById('e-reprev').value)||0;
-  const newOrders=parseFloat(document.getElementById('e-neworders').value)||0;
-  const repOrders=parseFloat(document.getElementById('e-reporders').value)||0;
-  const spend=parseFloat(document.getElementById('e-spend').value)||0;
-  const ppcRev=parseFloat(document.getElementById('e-ppcrev').value)||0;
-  const orders=newOrders+repOrders;
-  // Update total orders field
-  document.getElementById('e-orders').value=orders||'';
-  if(!rev&&!orders&&!spend){document.getElementById('auto-calc').style.display='none';return;}
-  const e={rev,newRev,repRev,newOrders,repOrders,spend,ppcRev};
-  const c=calcEntry(e);
-  document.getElementById('auto-calc').style.display='block';
-  document.getElementById('c-mer').textContent=c.mer>0?fmtR(c.mer):'—';
-  document.getElementById('c-adsmer').textContent=c.adsMer>0?fmtR(c.adsMer):'—';
-  document.getElementById('c-nrs').textContent=c.nrs>0?fmtR(c.nrs):'—';
-  document.getElementById('c-reprate').textContent=c.repRate>0?fmtPct(c.repRate):'—';
-  document.getElementById('c-orders').textContent=orders||'—';
-  document.getElementById('c-aov').textContent=c.aov>0?fmt$(c.aov):'—';
-  document.getElementById('c-newaov').textContent=c.newAov>0?fmt$(c.newAov):'—';
-  document.getElementById('c-repaov').textContent=c.repAov>0?fmt$(c.repAov):'—';
-  document.getElementById('c-newpct').textContent=c.newPct>0?fmtPct(c.newPct):'—';
-  document.getElementById('c-reppct').textContent=c.repPct>0?fmtPct(c.repPct):'—';
-}
-
-function saveEntry(){
-  const date=document.getElementById('e-date').value;
-  const spend=parseFloat(document.getElementById('e-spend').value)||0;
-  const ppcRev=parseFloat(document.getElementById('e-ppcrev').value)||0;
-  const rev=parseFloat(document.getElementById('e-rev').value)||0;
-  const newRev=parseFloat(document.getElementById('e-newrev').value)||0;
-  const repRev=parseFloat(document.getElementById('e-reprev').value)||0;
-  const newOrders=parseFloat(document.getElementById('e-neworders').value)||0;
-  const repOrders=parseFloat(document.getElementById('e-reporders').value)||0;
-  const msg=document.getElementById('e-msg');
-  if(!date||!rev||!spend){msg.className='err';msg.textContent='Date, revenue, and spend required.';return;}
-  db.entries.push({id:'e'+Date.now(),date,spend,ppcRev,rev,newRev,repRev,newOrders,repOrders});
-  db.entries.sort((a,b)=>a.date.localeCompare(b.date));
-  save();
-  populateWindowSelectors();
-  msg.className='msg';msg.textContent='Saved.';
-  setTimeout(()=>msg.textContent='',2500);
-  ['e-spend','e-ppcrev','e-rev','e-newrev','e-reprev','e-neworders','e-reporders','e-orders'].forEach(id=>{
-    const el=document.getElementById(id);if(el)el.value='';
+function migrateFromV2(legacyDb) {
+  const clientName = (legacyDb.settings && legacyDb.settings.clientName) ? legacyDb.settings.clientName : 'Client 1';
+  const preparedBy = (legacyDb.settings && legacyDb.settings.preparedBy) ? legacyDb.settings.preparedBy : 'Ahmed — Modonix';
+  const perClientSettings = { ...DEFAULT_SETTINGS };
+  ['merFloor', 'merAccept', 'merStrong'].forEach(k => {
+    if (legacyDb.settings && legacyDb.settings[k] != null) perClientSettings[k] = legacyDb.settings[k];
   });
-  document.getElementById('auto-calc').style.display='none';
+  const client = {
+    id: 'cli_' + Date.now() + '_migrated',
+    name: clientName,
+    settings: perClientSettings,
+    entries: legacyDb.entries || [],
+    audits: []
+  };
+  return { schemaVersion: 3, preparedBy, activeClientId: client.id, clients: [client] };
 }
 
-function getWindow(endDate){
-  const all=db.entries.map(calcEntry);
-  if(!endDate||!all.length) return all.slice(-4);
-  const idx=all.findIndex(e=>e.date===endDate);
-  if(idx<0) return all.slice(-4);
-  const start=Math.max(0,idx-3);
-  return all.slice(start,idx+1);
+let db;
+try {
+  const v3raw = localStorage.getItem(SK);
+  if (v3raw) {
+    db = JSON.parse(v3raw);
+  } else {
+    const v2raw = localStorage.getItem(SK_LEGACY);
+    if (v2raw) {
+      const legacyDb = JSON.parse(v2raw);
+      db = migrateFromV2(legacyDb);
+      localStorage.setItem(SK, JSON.stringify(db));
+      setTimeout(() => toast('Migrated from v2 — your old data is now under "' + db.clients[0].name + '"', 'success'), 600);
+    } else {
+      db = DEFAULT_DB();
+    }
+  }
+  if (!db.clients || !db.clients.length) db = DEFAULT_DB();
+  if (!db.activeClientId || !db.clients.find(c => c.id === db.activeClientId)) db.activeClientId = db.clients[0].id;
+  if (!db.preparedBy) db.preparedBy = 'Ahmed — Modonix';
+  db.clients.forEach(c => { if (!c.audits) c.audits = []; });
+} catch (e) {
+  db = DEFAULT_DB();
 }
 
-function getMerZone(mer){
-  if(mer>=cfg().merStrong) return{status:'STRONG',cls:'bg'};
-  if(mer>=cfg().merAccept) return{status:'ACCEPTABLE',cls:'bb'};
-  if(mer>=cfg().merFloor) return{status:'WEAK',cls:'by'};
-  return{status:'FAIL',cls:'br'};
+let meta;
+try {
+  meta = JSON.parse(localStorage.getItem(META_KEY) || 'null') || { lastBackup: null, bannerDismissedUntil: null };
+} catch (e) {
+  meta = { lastBackup: null, bannerDismissedUntil: null };
 }
 
-function calcDecision(entries){
-  if(entries.length<2) return null;
-  const n=entries.length,w1=entries[0],wN=entries[n-1];
-  const merArr=entries.map(e=>e.mer);
-  const merTrend=w1.mer>0?(wN.mer-w1.mer)/w1.mer:0;
-  const merTrendSt=merTrend>=0.1?'IMPROVING':merTrend<=-0.1?'DECLINING':'FLAT';
-  const avgMer=merArr.reduce((a,b)=>a+b,0)/n;
-  const avgAdsMer=entries.map(e=>e.adsMer).reduce((a,b)=>a+b,0)/n;
-  const merZone=getMerZone(avgMer);
-  const aovTrend=w1.aov>0?(wN.aov-w1.aov)/w1.aov:0;
-  const aovSt=aovTrend>=0.05?'IMPROVING':aovTrend<=-0.05?'DECLINING':'FLAT';
-  const nrsTrend=w1.nrs>0?(wN.nrs-w1.nrs)/w1.nrs:0;
-  const nrsSt=nrsTrend>=0.1?'IMPROVING':nrsTrend<=-0.1?'DECLINING':'FLAT';
-  const repTrend=w1.repRate>0?(wN.repRate-w1.repRate)/w1.repRate:0;
-  const repSt=repTrend>=0.05?'IMPROVING':repTrend<=-0.05?'DECLINING':'FLAT';
-  const merMean=avgMer;
-  const merStd=Math.sqrt(merArr.reduce((a,b)=>a+Math.pow(b-merMean,2),0)/n);
-  const stability=merStd<=0.15*merMean?'STABLE':merStd<=0.3*merMean?'VOLATILE':'UNSTABLE';
-  let dec='HOLD';
-  const drivers=[];
-  if(merZone.status==='FAIL'){
-    dec='INVESTIGATE — MER BELOW FLOOR';
-    drivers.push({signal:'Total MER',value:fmtR(avgMer),severity:'override',reason:'4W average MER is below your floor of '+cfg().merFloor+'×. Business is spending more than it should relative to total revenue.'});
-  } else if(merZone.status==='WEAK'){
-    dec='CAUTION';
-    drivers.push({signal:'Total MER',value:fmtR(avgMer),severity:'warning',reason:'MER is between floor and acceptable. Watch closely — margin is compressing.'});
-  } else if(merTrendSt==='DECLINING'&&merZone.status!=='STRONG'){
-    dec='CAUTION';
-    drivers.push({signal:'MER Trend',value:'Declining '+(merTrend*100).toFixed(1)+'%',severity:'warning',reason:'MER is declining week over week. Revenue efficiency is eroding.'});
-  } else if(merZone.status==='STRONG'&&merTrendSt==='IMPROVING'&&stability==='STABLE'){
-    dec='SCALE';
-  } else if(merZone.status==='STRONG'&&merTrendSt==='IMPROVING'){
-    dec='SCALE (MONITOR)';
-  } else if(merZone.status==='STRONG'){
-    dec='HOLD — STRONG';
-  } else dec='HOLD';
-  if(aovSt==='DECLINING') drivers.push({signal:'AOV',value:'Declining '+(aovTrend*100).toFixed(1)+'%',severity:'warning',reason:'Average order value is falling. Could indicate discounting, product mix shift, or smaller basket sizes.'});
-  if(nrsSt==='DECLINING') drivers.push({signal:'New Rev/Spend',value:'Declining '+(nrsTrend*100).toFixed(1)+'%',severity:'warning',reason:'Getting less new revenue per dollar spent. Acquisition efficiency is dropping.'});
-  if(repSt==='DECLINING') drivers.push({signal:'Repeat Rate',value:'Declining '+(repTrend*100).toFixed(1)+'%',severity:'warning',reason:'Fewer repeat customers. Retention may be weakening.'});
-  const RAT={'SCALE':'MER is STRONG, trend IMPROVING, signal STABLE. Business health supports scaling ad spend.','SCALE (MONITOR)':'MER is STRONG and improving, but signal is volatile. Scale carefully — watch weekly.','HOLD — STRONG':'MER is strong but trend is flat. No urgency to scale or cut. Optimize and hold.','HOLD':'Business metrics are acceptable. No clear signal to scale or reduce. Monitor trend.','CAUTION':'MER is weakening or trending down. Do not increase spend. Investigate before any changes.','INVESTIGATE — MER BELOW FLOOR':'MER has fallen below your profitability floor. Cut new spend and find the driver immediately.'};
-  return{dec,merZone,merTrendSt,aovSt,nrsSt,repSt,stability,avgMer,avgAdsMer,merTrend:(merTrend*100).toFixed(1),merStd:merStd.toFixed(3),rationale:RAT[dec]||'',drivers,w1,wN,entries};
+function save() { localStorage.setItem(SK, JSON.stringify(db)); }
+function saveMeta() { localStorage.setItem(META_KEY, JSON.stringify(meta)); }
+
+// Active-client accessors
+function activeClient() { return db.clients.find(c => c.id === db.activeClientId) || db.clients[0]; }
+function cfg() { return activeClient().settings; }
+Object.defineProperty(db, 'entries', { get() { return activeClient().entries; }, set(v) { activeClient().entries = v; }, configurable: true });
+Object.defineProperty(db, 'settings', { get() { return activeClient().settings; }, set(v) { activeClient().settings = v; }, configurable: true });
+
+function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
+
+// ============================================================================
+// CUSTOM MODALS
+// ============================================================================
+function customConfirm(message, onYes, opts = {}) {
+  const overlay = document.getElementById('confirm-modal');
+  document.getElementById('confirm-title').textContent = opts.title || 'Confirm';
+  document.getElementById('confirm-message').textContent = message;
+  const btnYes = document.getElementById('confirm-yes');
+  const btnNo = document.getElementById('confirm-no');
+  const tcWrap = document.getElementById('confirm-typecheck-wrap');
+  const tcInput = document.getElementById('confirm-typecheck');
+  btnYes.textContent = opts.yesLabel || 'Confirm';
+  const requireType = opts.requireType === true;
+  if (requireType) {
+    tcWrap.style.display = 'block';
+    tcInput.value = '';
+    btnYes.disabled = true; btnYes.style.opacity = '0.4';
+    tcInput.oninput = () => {
+      const ok = tcInput.value.trim().toUpperCase() === 'DELETE';
+      btnYes.disabled = !ok; btnYes.style.opacity = ok ? '1' : '0.4';
+    };
+  } else {
+    tcWrap.style.display = 'none';
+    btnYes.disabled = false; btnYes.style.opacity = '1';
+  }
+  const cleanup = () => {
+    overlay.classList.remove('show');
+    btnYes.onclick = null; btnNo.onclick = null; tcInput.oninput = null;
+    document.removeEventListener('keydown', escHandler);
+  };
+  const escHandler = (e) => { if (e.key === 'Escape') cleanup(); };
+  btnYes.onclick = () => { if (!btnYes.disabled) { cleanup(); onYes(); } };
+  btnNo.onclick = cleanup;
+  document.addEventListener('keydown', escHandler);
+  overlay.classList.add('show');
+  setTimeout(() => (requireType ? tcInput : btnNo).focus(), 50);
 }
 
-function decCls(d){
-  if(d.startsWith('SCALE')) return 'g';
-  if(d.startsWith('HOLD')) return 'y';
+function customPrompt(message, defaultValue, onSubmit, opts = {}) {
+  const overlay = document.getElementById('prompt-modal');
+  document.getElementById('prompt-title').textContent = opts.title || 'Input';
+  document.getElementById('prompt-message').textContent = message;
+  const input = document.getElementById('prompt-input');
+  input.value = defaultValue || '';
+  input.placeholder = opts.placeholder || '';
+  const btnOk = document.getElementById('prompt-ok');
+  const btnCancel = document.getElementById('prompt-cancel');
+  btnOk.textContent = opts.okLabel || 'OK';
+  const cleanup = () => {
+    overlay.classList.remove('show');
+    btnOk.onclick = null; btnCancel.onclick = null; input.onkeydown = null;
+    document.removeEventListener('keydown', escHandler);
+  };
+  const escHandler = (e) => { if (e.key === 'Escape') cleanup(); };
+  const submit = () => { const val = input.value; cleanup(); onSubmit(val); };
+  btnOk.onclick = submit;
+  btnCancel.onclick = cleanup;
+  input.onkeydown = (e) => { if (e.key === 'Enter') { e.preventDefault(); submit(); } };
+  document.addEventListener('keydown', escHandler);
+  overlay.classList.add('show');
+  setTimeout(() => { input.focus(); input.select(); }, 50);
+}
+
+// ============================================================================
+// TOAST
+// ============================================================================
+function toast(msg, type = '') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast show ' + type;
+  setTimeout(() => el.classList.remove('show'), 3500);
+}
+
+// ============================================================================
+// CLIENT MANAGEMENT
+// ============================================================================
+function switchClient(clientId) {
+  if (!db.clients.find(c => c.id === clientId)) return;
+  db.activeClientId = clientId;
+  save();
+  populateClientSwitcher();
+  populateWindowSelectors();
+  renderSettings();
+  const activeTab = document.querySelector('.tab.active');
+  if (activeTab) {
+    const txt = activeTab.textContent.toLowerCase();
+    const tabName = txt.includes('window') ? 'window' : txt.includes('decision') ? 'decision' : txt.includes('history') ? 'history' : txt.includes('audit') ? 'audit' : txt.includes('settings') ? 'settings' : 'entry';
+    showTab(tabName);
+  }
+  toast('Switched to: ' + activeClient().name, 'success');
+}
+
+function populateClientSwitcher() {
+  const sel = document.getElementById('client-switcher');
+  if (!sel) return;
+  sel.innerHTML = db.clients.map(c => `<option value="${c.id}" ${c.id === db.activeClientId ? 'selected' : ''}>${escapeHtml(c.name)}</option>`).join('');
+}
+
+function quickAddClient() {
+  customPrompt('New client name:', '', (name) => {
+    const trimmed = (name || '').trim();
+    if (!trimmed) { toast('Client name cannot be empty', 'error'); return; }
+    if (db.clients.find(c => c.name.toLowerCase() === trimmed.toLowerCase())) {
+      toast('A client with that name already exists', 'error');
+      return;
+    }
+    const newClient = DEFAULT_CLIENT();
+    newClient.name = trimmed;
+    db.clients.push(newClient);
+    db.activeClientId = newClient.id;
+    save();
+    populateClientSwitcher();
+    populateWindowSelectors();
+    renderSettings();
+    toast('Added "' + trimmed + '" — now active', 'success');
+  }, { title: 'Add New Client', placeholder: 'e.g. Abolox', okLabel: 'Add Client' });
+}
+
+function renameActiveClient() {
+  const c = activeClient();
+  customPrompt('Rename client:', c.name, (newName) => {
+    const trimmed = (newName || '').trim();
+    if (!trimmed) { toast('Name cannot be empty', 'error'); return; }
+    if (db.clients.find(x => x.id !== c.id && x.name.toLowerCase() === trimmed.toLowerCase())) {
+      toast('Another client already has that name', 'error');
+      return;
+    }
+    c.name = trimmed;
+    save();
+    populateClientSwitcher();
+    renderSettings();
+    toast('Renamed to ' + trimmed, 'success');
+  }, { title: 'Rename Client', okLabel: 'Rename' });
+}
+
+function deleteActiveClient() {
+  if (db.clients.length <= 1) { toast('Cannot delete the only client. Add another first.', 'error'); return; }
+  const c = activeClient();
+  customConfirm(
+    'Permanently delete client "' + c.name + '" and ALL its weekly entries + saved audits? Other clients are not affected. This cannot be undone unless you have a backup.',
+    () => {
+      db.clients = db.clients.filter(x => x.id !== c.id);
+      db.activeClientId = db.clients[0].id;
+      save();
+      populateClientSwitcher();
+      populateWindowSelectors();
+      renderSettings();
+      toast('Deleted "' + c.name + '" — switched to ' + activeClient().name, 'success');
+    },
+    { title: 'Delete Client', yesLabel: 'Delete Client', requireType: true }
+  );
+}
+
+// ============================================================================
+// BACKUP / RESTORE
+// ============================================================================
+function exportBackup() {
+  const payload = {
+    schema: 'wt_v3_backup',
+    exportedAt: new Date().toISOString(),
+    clientCount: db.clients.length,
+    activeClientName: activeClient().name,
+    data: { [SK]: localStorage.getItem(SK), [META_KEY]: localStorage.getItem(META_KEY) }
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const date = new Date().toISOString().slice(0, 10);
+  a.href = url;
+  a.download = 'weekly-tracker-backup-all-clients-' + date + '.json';
+  document.body.appendChild(a); a.click();
+  setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 100);
+  meta.lastBackup = new Date().toISOString();
+  meta.bannerDismissedUntil = null;
+  saveMeta();
+  updateBackupBanner();
+  updateLastBackupInfo();
+  toast('Backup downloaded — ' + db.clients.length + ' client(s). Store it safely.', 'success');
+}
+
+function exportActiveClientOnly() {
+  const c = activeClient();
+  const payload = {
+    schema: 'wt_v3_client_backup',
+    exportedAt: new Date().toISOString(),
+    preparedBy: db.preparedBy,
+    client: JSON.parse(JSON.stringify(c))
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const date = new Date().toISOString().slice(0, 10);
+  const safeName = c.name.replace(/[^a-z0-9]+/gi, '-').toLowerCase();
+  a.href = url;
+  a.download = 'weekly-tracker-client-' + safeName + '-' + date + '.json';
+  document.body.appendChild(a); a.click();
+  setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 100);
+  toast('Exported "' + c.name + '" only — file can be imported as a new client', 'success');
+}
+
+function importBackup(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const payload = JSON.parse(e.target.result);
+      if (payload.schema === 'wt_v3_client_backup' && payload.client) {
+        let newClient = JSON.parse(JSON.stringify(payload.client));
+        newClient.id = 'cli_' + Date.now() + '_imported';
+        let baseName = newClient.name || 'Imported Client';
+        let finalName = baseName;
+        let n = 2;
+        while (db.clients.find(c => c.name === finalName)) { finalName = baseName + ' (' + n + ')'; n++; }
+        newClient.name = finalName;
+        if (!newClient.audits) newClient.audits = [];
+        customConfirm(
+          'Import "' + payload.client.name + '" as a new client? It will be added as "' + finalName + '" alongside your existing ' + db.clients.length + ' client(s).',
+          () => {
+            db.clients.push(newClient);
+            db.activeClientId = newClient.id;
+            save();
+            toast('Client imported — switching to ' + newClient.name, 'success');
+            setTimeout(() => location.reload(), 800);
+          },
+          { title: 'Import Single Client', yesLabel: 'Import' }
+        );
+        event.target.value = '';
+        return;
+      }
+      if (!payload.data) { toast('Invalid backup file', 'error'); return; }
+      const isV3 = !!payload.data[SK];
+      const isV2 = !!payload.data[SK_LEGACY];
+      if (!isV3 && !isV2) { toast('Invalid backup — no recognizable data', 'error'); return; }
+      const dateLabel = payload.exportedAt ? new Date(payload.exportedAt).toLocaleString() : 'unknown date';
+      const formatLabel = isV3 ? (payload.clientCount || '?') + ' client(s)' : 'v2 single-client (will be migrated)';
+      customConfirm(
+        'This REPLACES all current data with the backup from ' + dateLabel + ' (' + formatLabel + '). Continue?',
+        () => {
+          if (isV3) localStorage.setItem(SK, payload.data[SK]);
+          else { localStorage.setItem(SK_LEGACY, payload.data[SK_LEGACY]); localStorage.removeItem(SK); }
+          if (payload.data[META_KEY]) localStorage.setItem(META_KEY, payload.data[META_KEY]);
+          toast('Backup restored — reloading...', 'success');
+          setTimeout(() => location.reload(), 800);
+        },
+        { title: 'Restore Full Backup', yesLabel: 'Restore' }
+      );
+    } catch (err) {
+      toast('Could not parse backup file: ' + err.message, 'error');
+    }
+    event.target.value = '';
+  };
+  reader.readAsText(file);
+}
+
+function updateBackupBanner() {
+  const banner = document.getElementById('backup-banner');
+  const text = document.getElementById('banner-text');
+  if (!banner || !text) return;
+  const now = new Date();
+  if (meta.bannerDismissedUntil && new Date(meta.bannerDismissedUntil) > now) { banner.classList.add('hidden'); return; }
+  const totalEntries = db.clients.reduce((s, c) => s + c.entries.length, 0);
+  if (!totalEntries) { banner.classList.add('hidden'); return; }
+  if (!meta.lastBackup) {
+    text.textContent = '⚠ No backup yet — your data is at risk if browser data gets cleared. Export now (takes 2 seconds).';
+    banner.classList.remove('hidden');
+    return;
+  }
+  const days = Math.floor((now - new Date(meta.lastBackup)) / (1000 * 60 * 60 * 24));
+  if (days >= 7) {
+    text.textContent = '⚠ Last backup was ' + days + ' days ago. Export a fresh one now.';
+    banner.classList.remove('hidden');
+  } else {
+    banner.classList.add('hidden');
+  }
+}
+
+function dismissBanner() {
+  const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
+  meta.bannerDismissedUntil = tomorrow.toISOString();
+  saveMeta();
+  updateBackupBanner();
+}
+
+function updateLastBackupInfo() {
+  const el = document.getElementById('last-backup-info');
+  if (!el) return;
+  if (meta.lastBackup) {
+    const d = new Date(meta.lastBackup);
+    const days = Math.floor((Date.now() - d.getTime()) / (1000 * 60 * 60 * 24));
+    const ago = days === 0 ? 'today' : days === 1 ? 'yesterday' : days + ' days ago';
+    el.textContent = 'Last backup: ' + d.toLocaleString() + ' (' + ago + ')';
+  } else {
+    el.textContent = 'Last backup: never';
+  }
+}
+
+function clearAllData() {
+  customConfirm(
+    'This permanently deletes ALL ' + db.clients.length + ' client(s), ALL their entries, ALL settings, and ALL saved audits. If you have not exported a backup, this is irreversible.',
+    () => {
+      localStorage.removeItem(SK);
+      localStorage.removeItem(SK_LEGACY);
+      localStorage.removeItem(META_KEY);
+      location.reload();
+    },
+    { title: 'Clear ALL Data (All Clients)', yesLabel: 'Delete Everything', requireType: true }
+  );
+}
+
+// ============================================================================
+// CORE LOGIC (per-entry calculations, MER zones, decision)
+// ============================================================================
+function calcEntry(e) {
+  const orders = (e.newOrders || 0) + (e.repOrders || 0);
+  const aov = orders > 0 ? e.rev / orders : 0;
+  const newAov = (e.newOrders || 0) > 0 ? e.newRev / (e.newOrders || 0) : 0;
+  const repAov = (e.repOrders || 0) > 0 ? e.repRev / (e.repOrders || 0) : 0;
+  const repRate = orders > 0 ? (e.repOrders || 0) / orders : 0;
+  const mer = e.spend > 0 ? e.rev / e.spend : 0;
+  const adsMer = e.spend > 0 ? (e.ppcRev || 0) / e.spend : 0;
+  const nrs = e.spend > 0 ? (e.newRev || 0) / e.spend : 0;
+  const newPct = e.rev > 0 ? (e.newRev || 0) / e.rev : 0;
+  const repPct = e.rev > 0 ? (e.repRev || 0) / e.rev : 0;
+  return { ...e, orders, aov, newAov, repAov, repRate, mer, adsMer, nrs, newPct, repPct };
+}
+
+function getMerZone(mer) {
+  if (mer >= cfg().merStrong) return { status: 'STRONG', cls: 'bg' };
+  if (mer >= cfg().merAccept) return { status: 'ACCEPTABLE', cls: 'bb' };
+  if (mer >= cfg().merFloor) return { status: 'WEAK', cls: 'by' };
+  return { status: 'FAIL', cls: 'br' };
+}
+
+function calcDecision(entries) {
+  if (entries.length < 2) return null;
+  const n = entries.length, w1 = entries[0], wN = entries[n - 1];
+  const merArr = entries.map(e => e.mer);
+  const merTrend = w1.mer > 0 ? (wN.mer - w1.mer) / w1.mer : 0;
+  const merTrendSt = merTrend >= 0.1 ? 'IMPROVING' : merTrend <= -0.1 ? 'DECLINING' : 'FLAT';
+  const avgMer = merArr.reduce((a, b) => a + b, 0) / n;
+  const avgAdsMer = entries.map(e => e.adsMer).reduce((a, b) => a + b, 0) / n;
+  const merZone = getMerZone(avgMer);
+  const aovTrend = w1.aov > 0 ? (wN.aov - w1.aov) / w1.aov : 0;
+  const aovSt = aovTrend >= 0.05 ? 'IMPROVING' : aovTrend <= -0.05 ? 'DECLINING' : 'FLAT';
+  const nrsTrend = w1.nrs > 0 ? (wN.nrs - w1.nrs) / w1.nrs : 0;
+  const nrsSt = nrsTrend >= 0.1 ? 'IMPROVING' : nrsTrend <= -0.1 ? 'DECLINING' : 'FLAT';
+  const repTrend = w1.repRate > 0 ? (wN.repRate - w1.repRate) / w1.repRate : 0;
+  const repSt = repTrend >= 0.05 ? 'IMPROVING' : repTrend <= -0.05 ? 'DECLINING' : 'FLAT';
+  const merMean = avgMer;
+  const merStd = Math.sqrt(merArr.reduce((a, b) => a + Math.pow(b - merMean, 2), 0) / n);
+  const stability = merStd <= 0.15 * merMean ? 'STABLE' : merStd <= 0.3 * merMean ? 'VOLATILE' : 'UNSTABLE';
+  let dec = 'HOLD';
+  const drivers = [];
+  if (merZone.status === 'FAIL') {
+    dec = 'INVESTIGATE — MER BELOW FLOOR';
+    drivers.push({ signal: 'Total MER', value: fmtR(avgMer), severity: 'override', reason: '4W average MER is below your floor of ' + cfg().merFloor + '×. Business is spending more than it should relative to total revenue.' });
+  } else if (merZone.status === 'WEAK') {
+    dec = 'CAUTION';
+    drivers.push({ signal: 'Total MER', value: fmtR(avgMer), severity: 'warning', reason: 'MER is between floor and acceptable. Watch closely — margin is compressing.' });
+  } else if (merTrendSt === 'DECLINING' && merZone.status !== 'STRONG') {
+    dec = 'CAUTION';
+    drivers.push({ signal: 'MER Trend', value: 'Declining ' + (merTrend * 100).toFixed(1) + '%', severity: 'warning', reason: 'MER is declining week over week. Revenue efficiency is eroding.' });
+  } else if (merZone.status === 'STRONG' && merTrendSt === 'IMPROVING' && stability === 'STABLE') {
+    dec = 'SCALE';
+  } else if (merZone.status === 'STRONG' && merTrendSt === 'IMPROVING') {
+    dec = 'SCALE (MONITOR)';
+  } else if (merZone.status === 'STRONG') {
+    dec = 'HOLD — STRONG';
+  } else dec = 'HOLD';
+  if (aovSt === 'DECLINING') drivers.push({ signal: 'AOV', value: 'Declining ' + (aovTrend * 100).toFixed(1) + '%', severity: 'warning', reason: 'Average order value is falling. Could indicate discounting, product mix shift, or smaller basket sizes.' });
+  if (nrsSt === 'DECLINING') drivers.push({ signal: 'New Rev/Spend', value: 'Declining ' + (nrsTrend * 100).toFixed(1) + '%', severity: 'warning', reason: 'Getting less new revenue per dollar spent. Acquisition efficiency is dropping.' });
+  if (repSt === 'DECLINING') drivers.push({ signal: 'Repeat Rate', value: 'Declining ' + (repTrend * 100).toFixed(1) + '%', severity: 'warning', reason: 'Fewer repeat customers. Retention may be weakening.' });
+  const RAT = {
+    'SCALE': 'MER is STRONG, trend IMPROVING, signal STABLE. Business health supports scaling ad spend.',
+    'SCALE (MONITOR)': 'MER is STRONG and improving, but signal is volatile. Scale carefully — watch weekly.',
+    'HOLD — STRONG': 'MER is strong but trend is flat. No urgency to scale or cut. Optimize and hold.',
+    'HOLD': 'Business metrics are acceptable. No clear signal to scale or reduce. Monitor trend.',
+    'CAUTION': 'MER is weakening or trending down. Do not increase spend. Investigate before any changes.',
+    'INVESTIGATE — MER BELOW FLOOR': 'MER has fallen below your profitability floor. Cut new spend and find the driver immediately.'
+  };
+  return { dec, merZone, merTrendSt, aovSt, nrsSt, repSt, stability, avgMer, avgAdsMer, merTrend: (merTrend * 100).toFixed(1), aovTrend: (aovTrend * 100).toFixed(1), nrsTrend: (nrsTrend * 100).toFixed(1), repTrend: (repTrend * 100).toFixed(1), merStd: merStd.toFixed(3), rationale: RAT[dec] || '', drivers, w1, wN, entries };
+}
+
+function decCls(d) {
+  if (d.startsWith('SCALE')) return 'g';
+  if (d.startsWith('HOLD')) return 'y';
   return 'r';
 }
-function fmt$(n){return '$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}
-function fmtR(n){return(+n).toFixed(2)+'×'}
-function fmtPct(n){return(n*100).toFixed(1)+'%'}
-function trendCls(st){return st==='IMPROVING'?'trend-up':st==='DECLINING'?'trend-dn':'trend-fl'}
+function fmt$(n) { return '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+function fmtR(n) { return (+n).toFixed(2) + '×'; }
+function fmtPct(n) { return (n * 100).toFixed(1) + '%'; }
+function trendCls(st) { return st === 'IMPROVING' ? 'trend-up' : st === 'DECLINING' ? 'trend-dn' : 'trend-fl'; }
 
-function populateWindowSelectors(){
-  const dates=db.entries.map(e=>e.date);
-  ['win-start','dec-start'].forEach(id=>{
-    const el=document.getElementById(id);if(!el)return;
-    const cur=el.value;
-    el.innerHTML='<option value="">Most recent 4 weeks</option>'+
-      dates.map(d=>`<option value="${d}">${d}</option>`).join('');
-    if(cur) el.value=cur;
+function getWindow(endDate) {
+  const all = activeClient().entries.map(calcEntry);
+  if (!endDate || !all.length) return all.slice(-4);
+  const idx = all.findIndex(e => e.date === endDate);
+  if (idx < 0) return all.slice(-4);
+  const start = Math.max(0, idx - 3);
+  return all.slice(start, idx + 1);
+}
+
+function populateWindowSelectors() {
+  const dates = activeClient().entries.map(e => e.date);
+  ['win-start', 'dec-start'].forEach(id => {
+    const el = document.getElementById(id); if (!el) return;
+    const cur = el.value;
+    el.innerHTML = '<option value="">Most recent 4 weeks</option>' + dates.map(d => '<option value="' + d + '">' + d + '</option>').join('');
+    if (cur) el.value = cur;
   });
 }
 
-function showTab(t){
-  ['entry','window','decision','history','settings'].forEach(x=>{
-    document.getElementById('tab-'+x).style.display=x===t?'block':'none';
-  });
-  document.querySelectorAll('.tab').forEach((b,i)=>{
-    b.classList.toggle('active',['entry','window','decision','history','settings'][i]===t);
-  });
-  if(t==='window'){populateWindowSelectors();renderWindow();}
-  if(t==='decision'){populateWindowSelectors();renderDecision();}
-  if(t==='history') renderHistory();
-  if(t==='settings') renderSettings();
+// ============================================================================
+// ENTRY UI
+// ============================================================================
+function calcAuto() {
+  const rev = parseFloat(document.getElementById('e-rev').value) || 0;
+  const newRev = parseFloat(document.getElementById('e-newrev').value) || 0;
+  const repRev = parseFloat(document.getElementById('e-reprev').value) || 0;
+  const newOrders = parseFloat(document.getElementById('e-neworders').value) || 0;
+  const repOrders = parseFloat(document.getElementById('e-reporders').value) || 0;
+  const spend = parseFloat(document.getElementById('e-spend').value) || 0;
+  const ppcRev = parseFloat(document.getElementById('e-ppcrev').value) || 0;
+  const orders = newOrders + repOrders;
+  document.getElementById('e-orders').value = orders || '';
+  if (!rev && !orders && !spend) { document.getElementById('auto-calc').style.display = 'none'; return; }
+  const c = calcEntry({ rev, newRev, repRev, newOrders, repOrders, spend, ppcRev });
+  document.getElementById('auto-calc').style.display = 'block';
+  document.getElementById('c-mer').textContent = c.mer > 0 ? fmtR(c.mer) : '—';
+  document.getElementById('c-adsmer').textContent = c.adsMer > 0 ? fmtR(c.adsMer) : '—';
+  document.getElementById('c-nrs').textContent = c.nrs > 0 ? fmtR(c.nrs) : '—';
+  document.getElementById('c-reprate').textContent = c.repRate > 0 ? fmtPct(c.repRate) : '—';
+  document.getElementById('c-orders').textContent = orders || '—';
+  document.getElementById('c-aov').textContent = c.aov > 0 ? fmt$(c.aov) : '—';
+  document.getElementById('c-newaov').textContent = c.newAov > 0 ? fmt$(c.newAov) : '—';
+  document.getElementById('c-repaov').textContent = c.repAov > 0 ? fmt$(c.repAov) : '—';
+  document.getElementById('c-newpct').textContent = c.newPct > 0 ? fmtPct(c.newPct) : '—';
+  document.getElementById('c-reppct').textContent = c.repPct > 0 ? fmtPct(c.repPct) : '—';
 }
 
-function renderWindow(){
-  const start=document.getElementById('win-start').value;
-  const entries=getWindow(start);
-  if(!entries.length){document.getElementById('win-content').innerHTML='<p style="color:var(--text3);font-size:13px">No data yet.</p>';return;}
-  const rows=entries.map((e,i)=>{
-    const mz=getMerZone(e.mer);
-    return`<tr>
-      <td>${i+1}W</td><td>${e.date}</td>
-      <td>${fmt$(e.rev)}</td><td>${fmt$(e.newRev)}</td><td>${fmt$(e.repRev||0)}</td>
-      <td>${e.newOrders}</td><td>${e.repOrders}</td><td>${e.orders}</td>
-      <td>${fmtPct(e.repRate)}</td>
-      <td>${fmt$(e.aov)}</td><td>${fmt$(e.newAov)}</td><td>${fmt$(e.repAov)}</td>
-      <td>${fmt$(e.spend)}</td><td>${fmt$(e.ppcRev||0)}</td>
-      <td>${fmtR(e.mer)}</td><td>${fmtR(e.adsMer)}</td><td>${fmtR(e.nrs)}</td>
-      <td><span class="badge ${mz.cls}">${mz.status}</span></td>
-    </tr>`;
+function saveEntry() {
+  const date = document.getElementById('e-date').value;
+  const spend = parseFloat(document.getElementById('e-spend').value) || 0;
+  const ppcRev = parseFloat(document.getElementById('e-ppcrev').value) || 0;
+  const rev = parseFloat(document.getElementById('e-rev').value) || 0;
+  const newRev = parseFloat(document.getElementById('e-newrev').value) || 0;
+  const repRev = parseFloat(document.getElementById('e-reprev').value) || 0;
+  const newOrders = parseFloat(document.getElementById('e-neworders').value) || 0;
+  const repOrders = parseFloat(document.getElementById('e-reporders').value) || 0;
+  const msg = document.getElementById('e-msg');
+  if (!date || !rev || !spend) { msg.className = 'err'; msg.textContent = 'Date, revenue, and spend required.'; return; }
+  activeClient().entries.push({ id: 'e' + Date.now(), date, spend, ppcRev, rev, newRev, repRev, newOrders, repOrders });
+  activeClient().entries.sort((a, b) => a.date.localeCompare(b.date));
+  save();
+  populateWindowSelectors();
+  updateBackupBanner();
+  msg.className = 'msg'; msg.textContent = 'Saved.';
+  setTimeout(() => msg.textContent = '', 2500);
+  ['e-spend', 'e-ppcrev', 'e-rev', 'e-newrev', 'e-reprev', 'e-neworders', 'e-reporders', 'e-orders'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  document.getElementById('auto-calc').style.display = 'none';
+}
+
+// ============================================================================
+// VIEWS — Window, Decision, History
+// ============================================================================
+function showTab(t) {
+  ['entry', 'window', 'decision', 'history', 'audit', 'settings'].forEach(x => {
+    const el = document.getElementById('tab-' + x);
+    if (el) el.style.display = x === t ? 'block' : 'none';
+  });
+  document.querySelectorAll('.tab').forEach((b, i) => {
+    b.classList.toggle('active', ['entry', 'window', 'decision', 'history', 'audit', 'settings'][i] === t);
+  });
+  if (t === 'window') { populateWindowSelectors(); renderWindow(); }
+  if (t === 'decision') { populateWindowSelectors(); renderDecision(); }
+  if (t === 'history') renderHistory();
+  if (t === 'audit') { populateAuditClientSwitcher(); updateCostPreview(); }
+  if (t === 'settings') { renderSettings(); updateLastBackupInfo(); loadAiSettingsToUi(); updateAiSpendInfo(); }
+}
+
+function renderWindow() {
+  const start = document.getElementById('win-start').value;
+  const entries = getWindow(start);
+  if (!entries.length) { document.getElementById('win-content').innerHTML = '<p style="color:var(--text3);font-size:13px">No data yet.</p>'; return; }
+  const rows = entries.map((e, i) => {
+    const mz = getMerZone(e.mer);
+    return '<tr>' +
+      '<td>' + (i + 1) + 'W</td><td>' + e.date + '</td>' +
+      '<td>' + fmt$(e.rev) + '</td><td>' + fmt$(e.newRev) + '</td><td>' + fmt$(e.repRev || 0) + '</td>' +
+      '<td>' + e.newOrders + '</td><td>' + e.repOrders + '</td><td>' + e.orders + '</td>' +
+      '<td>' + fmtPct(e.repRate) + '</td>' +
+      '<td>' + fmt$(e.aov) + '</td><td>' + fmt$(e.newAov) + '</td><td>' + fmt$(e.repAov) + '</td>' +
+      '<td>' + fmt$(e.spend) + '</td><td>' + fmt$(e.ppcRev || 0) + '</td>' +
+      '<td>' + fmtR(e.mer) + '</td><td>' + fmtR(e.adsMer) + '</td><td>' + fmtR(e.nrs) + '</td>' +
+      '<td><span class="badge ' + mz.cls + '">' + mz.status + '</span></td>' +
+      '</tr>';
   }).join('');
-  document.getElementById('win-content').innerHTML=`<div class="tbl-wrap"><table class="tbl">
-    <thead><tr>
-      <th>Win</th><th>Date</th>
-      <th>Revenue</th><th>New Rev</th><th>Repeat Rev</th>
-      <th>New Ord</th><th>Rep Ord</th><th>Total Ord</th><th>Rep%</th>
-      <th>AOV</th><th>New AOV</th><th>Rep AOV</th>
-      <th>Spend</th><th>PPC Rev</th>
-      <th>Total MER</th><th>Ads MER</th><th>New Rev/Spend</th><th>MER Zone</th>
-    </tr></thead>
-    <tbody>${rows}</tbody>
-  </table></div>`;
+  document.getElementById('win-content').innerHTML = '<div class="tbl-wrap"><table class="tbl">' +
+    '<thead><tr>' +
+    '<th>Win</th><th>Date</th>' +
+    '<th>Revenue</th><th>New Rev</th><th>Repeat Rev</th>' +
+    '<th>New Ord</th><th>Rep Ord</th><th>Total Ord</th><th>Rep%</th>' +
+    '<th>AOV</th><th>New AOV</th><th>Rep AOV</th>' +
+    '<th>Spend</th><th>PPC Rev</th>' +
+    '<th>Total MER</th><th>Ads MER</th><th>New Rev/Spend</th><th>MER Zone</th>' +
+    '</tr></thead><tbody>' + rows + '</tbody></table></div>';
 }
 
-function renderDecision(){
-  const start=document.getElementById('dec-start').value;
-  const entries=getWindow(start);
-  if(entries.length<2){document.getElementById('dec-content').innerHTML='<div class="card"><p style="color:var(--text3);font-size:13px">Need at least 2 weeks of data in this window.</p></div>';return;}
-  const d=calcDecision(entries);
-  const cl=decCls(d.dec);
-  const last=entries[entries.length-1];
-  const dateRange=`${entries[0].date} — ${last.date}`;
-
-  const signalCards=`<div class="signal-grid">
-    <div class="signal-card ${d.merZone.status==='FAIL'?'sig-override':d.merZone.status==='WEAK'?'sig-warning':d.merZone.status==='STRONG'?'sig-ok':'sig-neutral'}">
-      <div class="signal-label">4W Avg Total MER ${['FAIL','WEAK'].includes(d.merZone.status)?'<span class="driver-tag">DRIVER</span>':''}</div>
-      <div class="signal-val" style="color:${d.merZone.status==='STRONG'?'var(--green)':d.merZone.status==='ACCEPTABLE'?'var(--blue)':d.merZone.status==='WEAK'?'var(--amber)':'var(--red)'}">${fmtR(d.avgMer)}</div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="badge ${d.merZone.cls}">${d.merZone.status}</span><span class="badge bb">Ads: ${fmtR(d.avgAdsMer)}</span></div>
-    </div>
-    <div class="signal-card ${d.merTrendSt==='DECLINING'?'sig-warning':d.merTrendSt==='IMPROVING'?'sig-ok':'sig-neutral'}">
-      <div class="signal-label">MER Trend W4 vs W1 ${d.merTrendSt==='DECLINING'?'<span class="driver-tag">DRIVER</span>':''}</div>
-      <div class="signal-val ${trendCls(d.merTrendSt)}">${d.merTrend}%</div>
-      <div><span class="badge ${d.merTrendSt==='IMPROVING'?'bg':d.merTrendSt==='DECLINING'?'br':'bb'}">${d.merTrendSt}</span></div>
-    </div>
-    <div class="signal-card ${d.aovSt==='DECLINING'?'sig-warning':d.aovSt==='IMPROVING'?'sig-ok':'sig-neutral'}">
-      <div class="signal-label">AOV Trend ${d.aovSt==='DECLINING'?'<span class="driver-tag">DRIVER</span>':''}</div>
-      <div class="signal-val" style="color:${d.aovSt==='IMPROVING'?'var(--green)':d.aovSt==='DECLINING'?'var(--red)':'var(--text2)'};font-size:15px">${fmt$(last.aov)}</div>
-      <div><span class="badge ${d.aovSt==='IMPROVING'?'bg':d.aovSt==='DECLINING'?'br':'bb'}">${d.aovSt}</span></div>
-    </div>
-    <div class="signal-card ${d.nrsSt==='DECLINING'?'sig-warning':d.nrsSt==='IMPROVING'?'sig-ok':'sig-neutral'}">
-      <div class="signal-label">New Rev/Spend ${d.nrsSt==='DECLINING'?'<span class="driver-tag">DRIVER</span>':''}</div>
-      <div class="signal-val" style="color:${d.nrsSt==='IMPROVING'?'var(--green)':d.nrsSt==='DECLINING'?'var(--red)':'var(--text2)'}">${fmtR(last.nrs)}</div>
-      <div><span class="badge ${d.nrsSt==='IMPROVING'?'bg':d.nrsSt==='DECLINING'?'br':'bb'}">${d.nrsSt}</span></div>
-    </div>
-  </div>`;
-
-  const driversHtml=d.drivers.length?`<div style="margin-bottom:14px">
-    <div class="card-title">Active Signal Drivers</div>
-    ${d.drivers.map(dr=>`<div style="display:flex;gap:10px;align-items:flex-start;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px">
-      <span class="badge ${dr.severity==='override'?'br':'by'}" style="min-width:90px;text-align:center;flex-shrink:0">${dr.signal}</span>
-      <span style="font-weight:500;color:var(--text);min-width:110px;font-family:'IBM Plex Mono',monospace">${dr.value}</span>
-      <span style="color:var(--text3);line-height:1.5">${dr.reason}</span>
-    </div>`).join('')}
-  </div>`:'';
-
-  const trendRows=entries.map((e,i)=>`<tr>
-    <td>${e.date}</td>
-    <td>${fmt$(e.rev)}</td>
-    <td class="${trendCls(i>0?(e.mer>entries[i-1].mer?'IMPROVING':'DECLINING'):'FLAT')}">${fmtR(e.mer)}</td>
-    <td class="${trendCls(i>0?(e.adsMer>entries[i-1].adsMer?'IMPROVING':'DECLINING'):'FLAT')}">${fmtR(e.adsMer)}</td>
-    <td class="${trendCls(i>0?(e.aov>entries[i-1].aov?'IMPROVING':'DECLINING'):'FLAT')}">${fmt$(e.aov)}</td>
-    <td class="${trendCls(i>0?(e.nrs>entries[i-1].nrs?'IMPROVING':'DECLINING'):'FLAT')}">${fmtR(e.nrs)}</td>
-    <td>${fmtPct(e.repRate)}</td>
-    <td>${fmt$(e.spend)}</td>
-  </tr>`).join('');
-
-  document.getElementById('dec-content').innerHTML=`
-    <div class="hint">Period: <strong>${dateRange}</strong> &nbsp;·&nbsp; MER Floor: <strong>${cfg().merFloor}×</strong> &nbsp;·&nbsp; MER Strong: <strong>${cfg().merStrong}×</strong> &nbsp;·&nbsp; Stability: <strong>${d.stability}</strong></div>
-    <div class="card">
-      <div class="card-title">Signal Dashboard</div>
-      ${signalCards}
-      ${driversHtml}
-      <div class="rec rec-${cl}">
-        <div class="rec-t rec-t${cl}">${d.dec}</div>
-        <div class="rec-b rec-b${cl}">${d.rationale}</div>
-      </div>
-      <div class="action-box">
-        <div class="action-row">
-          <span class="action-label">Total MER — Last Week</span>
-          <span class="action-val">${fmtR(last.mer)} &nbsp;<span class="badge ${getMerZone(last.mer).cls}">${getMerZone(last.mer).status}</span></span>
-        </div>
-        <div class="action-row">
-          <span class="action-label">Ads MER — Last Week</span>
-          <span class="action-val">${fmtR(last.adsMer)} &nbsp;<span class="badge bb">PPC Revenue / Spend</span></span>
-        </div>
-        <div class="action-row">
-          <span class="action-label">New Revenue / Spend</span>
-          <span class="action-val">${fmtR(last.nrs)} &nbsp;<span class="badge ${d.nrsSt==='IMPROVING'?'bg':d.nrsSt==='DECLINING'?'br':'bb'}">${d.nrsSt}</span></span>
-        </div>
-        <div class="action-row">
-          <span class="action-label">Repeat Rate — Last Week</span>
-          <span class="action-val">${fmtPct(last.repRate)} &nbsp;(${last.repOrders} of ${last.orders} orders)</span>
-        </div>
-        <div class="action-row">
-          <span class="action-label">AOV — Last Week</span>
-          <span class="action-val">Total: ${fmt$(last.aov)} &nbsp;New: ${fmt$(last.newAov)} &nbsp;Repeat: ${fmt$(last.repAov)}</span>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title">4-Week Trend Detail</div>
-      <div class="tbl-wrap"><table class="tbl">
-        <thead><tr><th>Date</th><th>Revenue</th><th>Total MER</th><th>Ads MER</th><th>AOV</th><th>New Rev/Spend</th><th>Rep Rate</th><th>Spend</th></tr></thead>
-        <tbody>${trendRows}</tbody>
-      </table></div>
-    </div>`;
+function renderDecision() {
+  const start = document.getElementById('dec-start').value;
+  const entries = getWindow(start);
+  if (entries.length < 2) { document.getElementById('dec-content').innerHTML = '<div class="card"><p style="color:var(--text3);font-size:13px">Need at least 2 weeks of data in this window.</p></div>'; return; }
+  const d = calcDecision(entries);
+  const cl = decCls(d.dec);
+  const last = entries[entries.length - 1];
+  const dateRange = entries[0].date + ' — ' + last.date;
+  const signalCards = '<div class="signal-grid">' +
+    '<div class="signal-card ' + (d.merZone.status === 'FAIL' ? 'sig-override' : d.merZone.status === 'WEAK' ? 'sig-warning' : d.merZone.status === 'STRONG' ? 'sig-ok' : 'sig-neutral') + '">' +
+    '<div class="signal-label">4W Avg Total MER ' + (['FAIL', 'WEAK'].includes(d.merZone.status) ? '<span class="driver-tag">DRIVER</span>' : '') + '</div>' +
+    '<div class="signal-val" style="color:' + (d.merZone.status === 'STRONG' ? 'var(--green)' : d.merZone.status === 'ACCEPTABLE' ? 'var(--blue)' : d.merZone.status === 'WEAK' ? 'var(--amber)' : 'var(--red)') + '">' + fmtR(d.avgMer) + '</div>' +
+    '<div style="display:flex;gap:6px;flex-wrap:wrap"><span class="badge ' + d.merZone.cls + '">' + d.merZone.status + '</span><span class="badge bb">Ads: ' + fmtR(d.avgAdsMer) + '</span></div>' +
+    '</div>' +
+    '<div class="signal-card ' + (d.merTrendSt === 'DECLINING' ? 'sig-warning' : d.merTrendSt === 'IMPROVING' ? 'sig-ok' : 'sig-neutral') + '">' +
+    '<div class="signal-label">MER Trend W4 vs W1 ' + (d.merTrendSt === 'DECLINING' ? '<span class="driver-tag">DRIVER</span>' : '') + '</div>' +
+    '<div class="signal-val ' + trendCls(d.merTrendSt) + '">' + d.merTrend + '%</div>' +
+    '<div><span class="badge ' + (d.merTrendSt === 'IMPROVING' ? 'bg' : d.merTrendSt === 'DECLINING' ? 'br' : 'bb') + '">' + d.merTrendSt + '</span></div>' +
+    '</div>' +
+    '<div class="signal-card ' + (d.aovSt === 'DECLINING' ? 'sig-warning' : d.aovSt === 'IMPROVING' ? 'sig-ok' : 'sig-neutral') + '">' +
+    '<div class="signal-label">AOV Trend ' + (d.aovSt === 'DECLINING' ? '<span class="driver-tag">DRIVER</span>' : '') + '</div>' +
+    '<div class="signal-val" style="color:' + (d.aovSt === 'IMPROVING' ? 'var(--green)' : d.aovSt === 'DECLINING' ? 'var(--red)' : 'var(--text2)') + ';font-size:15px">' + fmt$(last.aov) + '</div>' +
+    '<div><span class="badge ' + (d.aovSt === 'IMPROVING' ? 'bg' : d.aovSt === 'DECLINING' ? 'br' : 'bb') + '">' + d.aovSt + '</span></div>' +
+    '</div>' +
+    '<div class="signal-card ' + (d.nrsSt === 'DECLINING' ? 'sig-warning' : d.nrsSt === 'IMPROVING' ? 'sig-ok' : 'sig-neutral') + '">' +
+    '<div class="signal-label">New Rev/Spend ' + (d.nrsSt === 'DECLINING' ? '<span class="driver-tag">DRIVER</span>' : '') + '</div>' +
+    '<div class="signal-val" style="color:' + (d.nrsSt === 'IMPROVING' ? 'var(--green)' : d.nrsSt === 'DECLINING' ? 'var(--red)' : 'var(--text2)') + '">' + fmtR(last.nrs) + '</div>' +
+    '<div><span class="badge ' + (d.nrsSt === 'IMPROVING' ? 'bg' : d.nrsSt === 'DECLINING' ? 'br' : 'bb') + '">' + d.nrsSt + '</span></div>' +
+    '</div>' +
+    '</div>';
+  const driversHtml = d.drivers.length ? '<div style="margin-bottom:14px"><div class="card-title">Active Signal Drivers</div>' + d.drivers.map(dr => '<div style="display:flex;gap:10px;align-items:flex-start;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px">' +
+    '<span class="badge ' + (dr.severity === 'override' ? 'br' : 'by') + '" style="min-width:90px;text-align:center;flex-shrink:0">' + dr.signal + '</span>' +
+    '<span style="font-weight:500;color:var(--text);min-width:110px;font-family:\'IBM Plex Mono\',monospace">' + dr.value + '</span>' +
+    '<span style="color:var(--text3);line-height:1.5">' + dr.reason + '</span>' +
+    '</div>').join('') + '</div>' : '';
+  const trendRows = entries.map((e, i) => '<tr>' +
+    '<td>' + e.date + '</td>' +
+    '<td>' + fmt$(e.rev) + '</td>' +
+    '<td class="' + trendCls(i > 0 ? (e.mer > entries[i - 1].mer ? 'IMPROVING' : 'DECLINING') : 'FLAT') + '">' + fmtR(e.mer) + '</td>' +
+    '<td class="' + trendCls(i > 0 ? (e.adsMer > entries[i - 1].adsMer ? 'IMPROVING' : 'DECLINING') : 'FLAT') + '">' + fmtR(e.adsMer) + '</td>' +
+    '<td class="' + trendCls(i > 0 ? (e.aov > entries[i - 1].aov ? 'IMPROVING' : 'DECLINING') : 'FLAT') + '">' + fmt$(e.aov) + '</td>' +
+    '<td class="' + trendCls(i > 0 ? (e.nrs > entries[i - 1].nrs ? 'IMPROVING' : 'DECLINING') : 'FLAT') + '">' + fmtR(e.nrs) + '</td>' +
+    '<td>' + fmtPct(e.repRate) + '</td>' +
+    '<td>' + fmt$(e.spend) + '</td>' +
+    '</tr>').join('');
+  document.getElementById('dec-content').innerHTML =
+    '<div class="hint">Client: <strong>' + escapeHtml(activeClient().name) + '</strong> &nbsp;·&nbsp; Period: <strong>' + dateRange + '</strong> &nbsp;·&nbsp; MER Floor: <strong>' + cfg().merFloor + '×</strong> &nbsp;·&nbsp; MER Strong: <strong>' + cfg().merStrong + '×</strong> &nbsp;·&nbsp; Stability: <strong>' + d.stability + '</strong></div>' +
+    '<div class="card">' +
+    '<div class="card-title">Signal Dashboard</div>' +
+    signalCards +
+    driversHtml +
+    '<div class="rec rec-' + cl + '">' +
+    '<div class="rec-t rec-t' + cl + '">' + d.dec + '</div>' +
+    '<div class="rec-b rec-b' + cl + '">' + d.rationale + '</div>' +
+    '</div>' +
+    '<div class="action-box">' +
+    '<div class="action-row"><span class="action-label">Total MER — Last Week</span><span class="action-val">' + fmtR(last.mer) + ' &nbsp;<span class="badge ' + getMerZone(last.mer).cls + '">' + getMerZone(last.mer).status + '</span></span></div>' +
+    '<div class="action-row"><span class="action-label">Ads MER — Last Week</span><span class="action-val">' + fmtR(last.adsMer) + ' &nbsp;<span class="badge bb">PPC Revenue / Spend</span></span></div>' +
+    '<div class="action-row"><span class="action-label">New Revenue / Spend</span><span class="action-val">' + fmtR(last.nrs) + ' &nbsp;<span class="badge ' + (d.nrsSt === 'IMPROVING' ? 'bg' : d.nrsSt === 'DECLINING' ? 'br' : 'bb') + '">' + d.nrsSt + '</span></span></div>' +
+    '<div class="action-row"><span class="action-label">Repeat Rate — Last Week</span><span class="action-val">' + fmtPct(last.repRate) + ' &nbsp;(' + last.repOrders + ' of ' + last.orders + ' orders)</span></div>' +
+    '<div class="action-row"><span class="action-label">AOV — Last Week</span><span class="action-val">Total: ' + fmt$(last.aov) + ' &nbsp;New: ' + fmt$(last.newAov) + ' &nbsp;Repeat: ' + fmt$(last.repAov) + '</span></div>' +
+    '</div>' +
+    '</div>' +
+    '<div class="card">' +
+    '<div class="card-title">4-Week Trend Detail</div>' +
+    '<div class="tbl-wrap"><table class="tbl">' +
+    '<thead><tr><th>Date</th><th>Revenue</th><th>Total MER</th><th>Ads MER</th><th>AOV</th><th>New Rev/Spend</th><th>Rep Rate</th><th>Spend</th></tr></thead>' +
+    '<tbody>' + trendRows + '</tbody>' +
+    '</table></div>' +
+    '</div>';
 }
 
-function renderHistory(){
-  const period=document.getElementById('hist-period').value;
-  let entries=db.entries.map(calcEntry);
-  const now=new Date();
-  if(period==='4w'){const s=new Date(now);s.setDate(s.getDate()-28);entries=entries.filter(e=>new Date(e.date)>=s);}
-  if(period==='month'){const s=new Date(now.getFullYear(),now.getMonth(),1);entries=entries.filter(e=>new Date(e.date)>=s);}
-  if(period==='quarter'){const q=Math.floor(now.getMonth()/3);const s=new Date(now.getFullYear(),q*3,1);entries=entries.filter(e=>new Date(e.date)>=s);}
-  if(!entries.length){document.getElementById('hist-content').innerHTML='<p style="color:var(--text3);font-size:13px">No entries for this period.</p>';return;}
-  const rows=entries.slice().reverse().map(e=>{
-    const mz=getMerZone(e.mer);
-    return`<tr>
-      <td>${e.date}</td><td>${fmt$(e.rev)}</td><td>${fmt$(e.newRev)}</td><td>${fmt$(e.repRev||0)}</td>
-      <td>${e.newOrders}</td><td>${e.repOrders}</td><td>${e.orders}</td>
-      <td>${fmtPct(e.repRate)}</td><td>${fmt$(e.aov)}</td>
-      <td>${fmt$(e.spend)}</td><td>${fmt$(e.ppcRev||0)}</td>
-      <td>${fmtR(e.mer)}</td><td>${fmtR(e.adsMer)}</td>
-      <td><span class="badge ${mz.cls}">${mz.status}</span></td>
-      <td><button class="btn btn-del" onclick="delEntry('${e.id}')">Del</button></td>
-    </tr>`;
+function renderHistory() {
+  const period = document.getElementById('hist-period').value;
+  let entries = activeClient().entries.map(calcEntry);
+  const now = new Date();
+  if (period === '4w') { const s = new Date(now); s.setDate(s.getDate() - 28); entries = entries.filter(e => new Date(e.date) >= s); }
+  if (period === 'month') { const s = new Date(now.getFullYear(), now.getMonth(), 1); entries = entries.filter(e => new Date(e.date) >= s); }
+  if (period === 'quarter') { const q = Math.floor(now.getMonth() / 3); const s = new Date(now.getFullYear(), q * 3, 1); entries = entries.filter(e => new Date(e.date) >= s); }
+  if (!entries.length) { document.getElementById('hist-content').innerHTML = '<p style="color:var(--text3);font-size:13px">No entries for this period.</p>'; return; }
+  const rows = entries.slice().reverse().map(e => {
+    const mz = getMerZone(e.mer);
+    return '<tr>' +
+      '<td>' + e.date + '</td><td>' + fmt$(e.rev) + '</td><td>' + fmt$(e.newRev) + '</td><td>' + fmt$(e.repRev || 0) + '</td>' +
+      '<td>' + e.newOrders + '</td><td>' + e.repOrders + '</td><td>' + e.orders + '</td>' +
+      '<td>' + fmtPct(e.repRate) + '</td><td>' + fmt$(e.aov) + '</td>' +
+      '<td>' + fmt$(e.spend) + '</td><td>' + fmt$(e.ppcRev || 0) + '</td>' +
+      '<td>' + fmtR(e.mer) + '</td><td>' + fmtR(e.adsMer) + '</td>' +
+      '<td><span class="badge ' + mz.cls + '">' + mz.status + '</span></td>' +
+      '<td><button class="btn btn-del" onclick="delEntry(\'' + e.id + '\')">Del</button></td>' +
+      '</tr>';
   }).join('');
-  document.getElementById('hist-content').innerHTML=`<div class="tbl-wrap"><table class="tbl">
-    <thead><tr><th>Date</th><th>Revenue</th><th>New Rev</th><th>Rep Rev</th><th>New Ord</th><th>Rep Ord</th><th>Total Ord</th><th>Rep%</th><th>AOV</th><th>Spend</th><th>PPC Rev</th><th>Total MER</th><th>Ads MER</th><th>Zone</th><th></th></tr></thead>
-    <tbody>${rows}</tbody>
-  </table></div>`;
+  document.getElementById('hist-content').innerHTML = '<div class="tbl-wrap"><table class="tbl">' +
+    '<thead><tr><th>Date</th><th>Revenue</th><th>New Rev</th><th>Rep Rev</th><th>New Ord</th><th>Rep Ord</th><th>Total Ord</th><th>Rep%</th><th>AOV</th><th>Spend</th><th>PPC Rev</th><th>Total MER</th><th>Ads MER</th><th>Zone</th><th></th></tr></thead>' +
+    '<tbody>' + rows + '</tbody></table></div>';
 }
 
-function delEntry(id){db.entries=db.entries.filter(e=>e.id!==id);save();renderHistory();}
-
-function exportCSV(){
-  const entries=db.entries.map(calcEntry);
-  const hdr='Date,Revenue,New Revenue,Repeat Revenue,New Orders,Repeat Orders,Total Orders,Repeat Rate,AOV,New AOV,Repeat AOV,Spend,PPC Revenue,Total MER,Ads MER,New Rev/Spend,MER Zone';
-  const rows=entries.map(e=>{const mz=getMerZone(e.mer);return`${e.date},${e.rev},${e.newRev||0},${e.repRev||0},${e.newOrders||0},${e.repOrders||0},${e.orders},${fmtPct(e.repRate)},${e.aov.toFixed(2)},${e.newAov.toFixed(2)},${e.repAov.toFixed(2)},${e.spend},${e.ppcRev||0},${e.mer.toFixed(2)},${e.adsMer.toFixed(2)},${e.nrs.toFixed(2)},${mz.status}`;});
-  const a=document.createElement('a');
-  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent([hdr,...rows].join('\n'));
-  a.download='weekly_tracker.csv';a.click();
+function delEntry(id) {
+  customConfirm('Delete this entry?', () => {
+    activeClient().entries = activeClient().entries.filter(e => e.id !== id);
+    save();
+    populateWindowSelectors();
+    renderHistory();
+    toast('Entry deleted', 'success');
+  }, { title: 'Delete Entry', yesLabel: 'Delete' });
 }
 
-function exportDecisionPDF(){
-  const start=document.getElementById('dec-start').value;
-  const entries=getWindow(start);
-  if(entries.length<2){alert('Need at least 2 weeks of data.');return;}
-  const d=calcDecision(entries);
-  const last=entries[entries.length-1];
-  const dateRange=`${entries[0].date} to ${last.date}`;
-  const client=cfg().clientName||'Client';
-  const preparer=cfg().preparedBy||'Modonix';
-  const today=new Date().toISOString().slice(0,10);
-  const {jsPDF}=window.jspdf;
-  const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'letter'});
-  const W=215.9,H=279.4;
-  const ml=15,mr=15,usableW=W-ml-mr;
-  let y=0;
+function exportCSV() {
+  const entries = activeClient().entries.map(calcEntry);
+  if (!entries.length) { toast('No entries to export', 'error'); return; }
+  const hdr = 'Date,Revenue,New Revenue,Repeat Revenue,New Orders,Repeat Orders,Total Orders,Repeat Rate,AOV,New AOV,Repeat AOV,Spend,PPC Revenue,Total MER,Ads MER,New Rev/Spend,MER Zone';
+  const rows = entries.map(e => { const mz = getMerZone(e.mer); return e.date + ',' + e.rev + ',' + (e.newRev || 0) + ',' + (e.repRev || 0) + ',' + (e.newOrders || 0) + ',' + (e.repOrders || 0) + ',' + e.orders + ',' + fmtPct(e.repRate) + ',' + e.aov.toFixed(2) + ',' + e.newAov.toFixed(2) + ',' + e.repAov.toFixed(2) + ',' + e.spend + ',' + (e.ppcRev || 0) + ',' + e.mer.toFixed(2) + ',' + e.adsMer.toFixed(2) + ',' + e.nrs.toFixed(2) + ',' + mz.status; });
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent([hdr, ...rows].join('\n'));
+  const safeName = activeClient().name.replace(/[^a-z0-9]+/gi, '_').toLowerCase();
+  a.download = 'weekly_tracker_' + safeName + '.csv';
+  a.click();
+  toast('CSV exported', 'success');
+}
 
-  // Header bar
-  doc.setFillColor(13,15,17);
-  doc.rect(0,0,W,22,'F');
-  doc.setFillColor(99,102,241);
-  doc.rect(0,22,W,1,'F');
-  doc.setFont('helvetica','bold');
-  doc.setFontSize(8);
-  doc.setTextColor(255,255,255);
-  doc.text('MODONIX  ·  PREPARED FOR: '+client.toUpperCase(),ml,14);
-  doc.setFont('helvetica','normal');
-  doc.setTextColor(139,143,154);
-  doc.text('WEEKLY BUSINESS TRACKER  ·  4-WEEK DECISION REPORT',W-mr,14,{align:'right'});
-  y=32;
+// ============================================================================
+// SETTINGS
+// ============================================================================
+function renderSettings() {
+  const activeNameEl = document.getElementById('active-client-name');
+  if (activeNameEl) activeNameEl.textContent = activeClient().name;
+  const countEl = document.getElementById('client-count-info');
+  if (countEl) countEl.textContent = db.clients.length === 1 ? '1 client total' : db.clients.length + ' clients total';
+  document.getElementById('s-preparer').value = db.preparedBy || 'Ahmed — Modonix';
+  document.getElementById('s-mer-floor').value = cfg().merFloor;
+  document.getElementById('s-mer-accept').value = cfg().merAccept;
+  document.getElementById('s-mer-strong').value = cfg().merStrong;
+  document.getElementById('entry-count').textContent = activeClient().entries.length;
+  document.getElementById('mer-zone-table').innerHTML = '<div class="tbl-wrap" style="margin-bottom:16px"><table class="tbl">' +
+    '<thead><tr><th>MER Range</th><th>Zone</th><th>Meaning</th></tr></thead>' +
+    '<tbody>' +
+    '<tr><td>Above ' + cfg().merStrong + '×</td><td><span class="badge bg">STRONG</span></td><td>Business is healthy and efficient. Supports scaling.</td></tr>' +
+    '<tr><td>' + cfg().merAccept + '× to ' + cfg().merStrong + '×</td><td><span class="badge bb">ACCEPTABLE</span></td><td>Profitable but thin. Hold before scaling.</td></tr>' +
+    '<tr><td>' + cfg().merFloor + '× to ' + cfg().merAccept + '×</td><td><span class="badge by">WEAK</span></td><td>Compressing. Investigate drivers.</td></tr>' +
+    '<tr><td>Below ' + cfg().merFloor + '×</td><td><span class="badge br">FAIL</span></td><td>Below profitability floor. Act immediately.</td></tr>' +
+    '</tbody></table></div>';
+}
 
-  // Title block
-  doc.setFont('helvetica','normal');
-  doc.setFontSize(9);
-  doc.setTextColor(113,128,144);
-  doc.text('PREPARED BY',ml,y);
-  doc.text('PREPARED FOR',W/2+2,y);
-  y+=5;
-  doc.setFont('helvetica','bold');
-  doc.setFontSize(12);
-  doc.setTextColor(13,15,17);
-  doc.text(preparer,ml,y);
-  doc.text(client,W/2+2,y);
-  y+=5;
-  doc.setFont('helvetica','normal');
-  doc.setFontSize(8);
-  doc.setTextColor(113,128,144);
-  doc.text('E-Commerce & Digital Commerce Consulting',ml,y);
-  doc.text(today,W/2+2,y);
-  y+=8;
-  doc.setDrawColor(220,226,234);
-  doc.setLineWidth(0.3);
-  doc.line(ml,y,W-mr,y);
-  y+=6;
+function updateSettings() {
+  cfg().merFloor = parseFloat(document.getElementById('s-mer-floor').value) || 10;
+  cfg().merAccept = parseFloat(document.getElementById('s-mer-accept').value) || 10;
+  cfg().merStrong = parseFloat(document.getElementById('s-mer-strong').value) || 12;
+  save();
+  // Re-render only the zone table (don't blow away inputs while typing)
+  document.getElementById('mer-zone-table').innerHTML = '<div class="tbl-wrap" style="margin-bottom:16px"><table class="tbl">' +
+    '<thead><tr><th>MER Range</th><th>Zone</th><th>Meaning</th></tr></thead>' +
+    '<tbody>' +
+    '<tr><td>Above ' + cfg().merStrong + '×</td><td><span class="badge bg">STRONG</span></td><td>Business is healthy and efficient. Supports scaling.</td></tr>' +
+    '<tr><td>' + cfg().merAccept + '× to ' + cfg().merStrong + '×</td><td><span class="badge bb">ACCEPTABLE</span></td><td>Profitable but thin. Hold before scaling.</td></tr>' +
+    '<tr><td>' + cfg().merFloor + '× to ' + cfg().merAccept + '×</td><td><span class="badge by">WEAK</span></td><td>Compressing. Investigate drivers.</td></tr>' +
+    '<tr><td>Below ' + cfg().merFloor + '×</td><td><span class="badge br">FAIL</span></td><td>Below profitability floor. Act immediately.</td></tr>' +
+    '</tbody></table></div>';
+}
 
-  doc.setFont('helvetica','normal');
-  doc.setFontSize(9);
-  doc.setTextColor(113,128,144);
-  doc.text('Period: '+dateRange,ml,y);
-  y+=5;
-  doc.setFont('helvetica','bold');
-  doc.setFontSize(18);
-  doc.setTextColor(13,15,17);
-  doc.text('4-Week Decision Report',ml,y);
-  y+=7;
-  doc.setFont('helvetica','normal');
-  doc.setFontSize(9);
-  doc.setTextColor(113,128,144);
-  doc.text('Weekly Business Tracker — MER & Revenue Quality Analysis',ml,y);
-  y+=10;
-  doc.setLineWidth(0.3);
-  doc.line(ml,y,W-mr,y);
-  y+=8;
+function updatePreparedBy() {
+  db.preparedBy = document.getElementById('s-preparer').value.trim() || 'Ahmed — Modonix';
+  save();
+}
 
-  // Decision banner
-  const decColor=d.dec.startsWith('SCALE')?[34,197,94]:d.dec.startsWith('HOLD')?[245,158,11]:[239,68,68];
-  const decBg=d.dec.startsWith('SCALE')?[240,255,244]:d.dec.startsWith('HOLD')?[255,251,235]:[255,245,245];
-  doc.setFillColor(...decBg);
-  doc.setDrawColor(...decColor);
-  doc.setLineWidth(0.5);
-  doc.roundedRect(ml,y,usableW,18,2,2,'FD');
-  doc.setFont('helvetica','bold');
-  doc.setFontSize(12);
-  doc.setTextColor(...decColor);
-  doc.text(d.dec,ml+5,y+8);
-  doc.setFont('helvetica','normal');
-  doc.setFontSize(8);
-  doc.setTextColor(45,55,72);
-  const ratLines=doc.splitTextToSize(d.rationale,usableW-10);
-  doc.text(ratLines,ml+5,y+13);
-  y+=22;
+// ============================================================================
+// AI AUDITOR
+// ============================================================================
+let aiSettings = { apiKey: '', model: 'claude-sonnet-4-5-20250929' };
+try {
+  const raw = localStorage.getItem(AI_KEY);
+  if (raw) aiSettings = { ...aiSettings, ...JSON.parse(raw) };
+} catch (e) {}
 
-  // Signal cards — 4 across
-  doc.setFont('helvetica','bold');
-  doc.setFontSize(8);
-  doc.setTextColor(113,128,144);
-  doc.text('SIGNAL DASHBOARD',ml,y);
-  y+=5;
-  const cardW=(usableW-9)/4;
-  const cards=[
-    {label:'4W AVG TOTAL MER',val:fmtR(d.avgMer),sub:d.merZone.status,subColor:d.merZone.status==='STRONG'?[34,197,94]:d.merZone.status==='ACCEPTABLE'?[59,130,246]:d.merZone.status==='WEAK'?[245,158,11]:[239,68,68]},
-    {label:'MER TREND W4 VS W1',val:d.merTrend+'%',sub:d.merTrendSt,subColor:d.merTrendSt==='IMPROVING'?[34,197,94]:d.merTrendSt==='DECLINING'?[239,68,68]:[113,128,144]},
-    {label:'AOV TREND',val:fmt$(last.aov),sub:d.aovSt,subColor:d.aovSt==='IMPROVING'?[34,197,94]:d.aovSt==='DECLINING'?[239,68,68]:[113,128,144]},
-    {label:'NEW REV / SPEND',val:fmtR(last.nrs),sub:d.nrsSt,subColor:d.nrsSt==='IMPROVING'?[34,197,94]:d.nrsSt==='DECLINING'?[239,68,68]:[113,128,144]},
-  ];
-  cards.forEach((c,i)=>{
-    const cx=ml+i*(cardW+3);
-    doc.setFillColor(248,249,250);
-    doc.setDrawColor(220,226,234);
-    doc.setLineWidth(0.3);
-    doc.roundedRect(cx,y,cardW,20,2,2,'FD');
-    doc.setFont('helvetica','normal');
-    doc.setFontSize(7);
-    doc.setTextColor(113,128,144);
-    doc.text(c.label,cx+3,y+5);
-    doc.setFont('helvetica','bold');
-    doc.setFontSize(11);
-    doc.setTextColor(13,15,17);
-    doc.text(c.val,cx+3,y+12);
-    doc.setFont('helvetica','bold');
-    doc.setFontSize(7);
-    doc.setTextColor(...c.subColor);
-    doc.text(c.sub,cx+3,y+18);
-  });
-  y+=25;
+function saveAiSettings() { localStorage.setItem(AI_KEY, JSON.stringify(aiSettings)); }
+function saveApiKey() { aiSettings.apiKey = document.getElementById('s-api-key').value.trim(); saveAiSettings(); }
+function saveModel() { aiSettings.model = document.getElementById('s-model').value; saveAiSettings(); updateCostPreview(); }
+function loadAiSettingsToUi() {
+  const k = document.getElementById('s-api-key');
+  const m = document.getElementById('s-model');
+  if (k) k.value = aiSettings.apiKey || '';
+  if (m) m.value = aiSettings.model || 'claude-sonnet-4-5-20250929';
+}
 
-  // Active drivers
-  if(d.drivers.length){
-    doc.setFont('helvetica','bold');
-    doc.setFontSize(8);
-    doc.setTextColor(113,128,144);
-    doc.text('ACTIVE SIGNAL DRIVERS',ml,y);
-    y+=5;
-    d.drivers.forEach(dr=>{
-      const bgColor=dr.severity==='override'?[255,245,245]:[255,251,235];
-      const bdColor=dr.severity==='override'?[239,68,68]:[245,158,11];
-      doc.setFillColor(...bgColor);
-      doc.setDrawColor(...bdColor);
-      doc.setLineWidth(0.4);
-      doc.roundedRect(ml,y,usableW,10,1,1,'FD');
-      doc.setFont('helvetica','bold');
-      doc.setFontSize(7);
-      doc.setTextColor(...bdColor);
-      doc.text(dr.signal.toUpperCase(),ml+3,y+4);
-      doc.setFont('helvetica','bold');
-      doc.setFontSize(7);
-      doc.setTextColor(13,15,17);
-      doc.text(dr.value,ml+35,y+4);
-      doc.setFont('helvetica','normal');
-      doc.setFontSize(7);
-      doc.setTextColor(45,55,72);
-      const reasonLines=doc.splitTextToSize(dr.reason,usableW-85);
-      doc.text(reasonLines[0],ml+70,y+4);
-      y+=12;
-    });
+let lastAuditResult = null;
+
+function populateAuditClientSwitcher() {
+  const sel = document.getElementById('aud-client');
+  if (!sel) return;
+  const cur = sel.value || db.activeClientId;
+  sel.innerHTML = db.clients.map(c => '<option value="' + c.id + '">' + escapeHtml(c.name) + '</option>').join('');
+  sel.value = cur;
+  renderAuditHistoryList();
+  updateCostPreview();
+}
+
+function onAuditClientChange() { renderAuditHistoryList(); updateCostPreview(); }
+
+function onAuditPeriodChange() {
+  const period = document.getElementById('aud-period').value;
+  const isCustom = period === 'custom';
+  document.getElementById('aud-custom-start-wrap').style.display = isCustom ? 'block' : 'none';
+  document.getElementById('aud-custom-end-wrap').style.display = isCustom ? 'block' : 'none';
+  updateCostPreview();
+}
+
+function onAuditCompareChange() {
+  const cmp = document.getElementById('aud-compare').value;
+  const isCustom = cmp === 'custom';
+  document.getElementById('aud-comp-start-wrap').style.display = isCustom ? 'block' : 'none';
+  document.getElementById('aud-comp-end-wrap').style.display = isCustom ? 'block' : 'none';
+  updateCostPreview();
+}
+
+function getAuditEntries(client, period, customStart, customEnd) {
+  let pool = client.entries.map(calcEntry).slice();
+  pool.sort((a, b) => a.date.localeCompare(b.date));
+  if (!pool.length) return { entries: [], rangeLabel: 'no data' };
+  if (period === 'custom') {
+    if (!customStart || !customEnd) return { entries: [], rangeLabel: 'custom range incomplete' };
+    const filtered = pool.filter(e => e.date >= customStart && e.date <= customEnd);
+    return { entries: filtered, rangeLabel: customStart + ' to ' + customEnd };
+  }
+  const wks = period === '4w' ? 4 : period === '8w' ? 8 : period === '12w' ? 12 : 4;
+  const recent = pool.slice(-wks);
+  const label = recent.length ? recent[0].date + ' to ' + recent[recent.length - 1].date : 'no entries';
+  return { entries: recent, rangeLabel: label };
+}
+
+function getComparisonEntries(client, primaryEntries, compareMode, customStart, customEnd) {
+  if (compareMode === 'none' || !primaryEntries.length) return { entries: [], rangeLabel: '' };
+  let pool = client.entries.map(calcEntry).slice();
+  pool.sort((a, b) => a.date.localeCompare(b.date));
+  if (compareMode === 'custom') {
+    if (!customStart || !customEnd) return { entries: [], rangeLabel: 'custom range incomplete' };
+    const filtered = pool.filter(e => e.date >= customStart && e.date <= customEnd);
+    return { entries: filtered, rangeLabel: customStart + ' to ' + customEnd };
+  }
+  const primaryStart = primaryEntries[0].date;
+  const before = pool.filter(e => e.date < primaryStart);
+  const recent = before.slice(-primaryEntries.length);
+  const label = recent.length ? recent[0].date + ' to ' + recent[recent.length - 1].date : 'no prior data';
+  return { entries: recent, rangeLabel: label };
+}
+
+function updateCostPreview() {
+  const el = document.getElementById('aud-cost-preview');
+  if (!el) return;
+  const isOpus = aiSettings.model.includes('opus');
+  const period = document.getElementById('aud-period').value;
+  const compare = document.getElementById('aud-compare').value;
+  let mult = 1;
+  if (period === '8w') mult *= 1.5;
+  if (period === '12w') mult *= 2;
+  if (compare !== 'none') mult *= 1.4;
+  const inTok = 3500 * mult;
+  const outTok = 1500;
+  const cost = isOpus
+    ? (inTok * 15 / 1e6 + outTok * 75 / 1e6)
+    : (inTok * 3 / 1e6 + outTok * 15 / 1e6);
+  el.textContent = '~$' + cost.toFixed(3) + ' estimated · ' + (isOpus ? 'Opus' : 'Sonnet');
+}
+
+function buildAuditPrompt({ client, primaryEntries, primaryRange, compareEntries, compareRange, question }) {
+  const formatEntry = (e) => {
+    return e.date + ' | rev=' + fmt$(e.rev) + ' (new=' + fmt$(e.newRev || 0) + ', rep=' + fmt$(e.repRev || 0) + ') | spend=' + fmt$(e.spend) + ' | ppcRev=' + fmt$(e.ppcRev || 0) + ' | MER=' + fmtR(e.mer) + ' | adsMER=' + fmtR(e.adsMer) + ' | NRS=' + fmtR(e.nrs) + ' | AOV=' + fmt$(e.aov) + ' (newAOV=' + fmt$(e.newAov) + ', repAOV=' + fmt$(e.repAov) + ') | repRate=' + fmtPct(e.repRate) + ' | orders=' + e.orders + ' (new=' + (e.newOrders || 0) + ', rep=' + (e.repOrders || 0) + ')';
+  };
+  const primaryRows = primaryEntries.map(formatEntry).join('\n  ');
+
+  let rulesVerdict = 'N/A (need 2+ weeks)';
+  if (primaryEntries.length >= 2) {
+    const d = calcDecision(primaryEntries);
+    if (d) rulesVerdict = d.dec + ' | avgMER=' + fmtR(d.avgMer) + ' (' + d.merZone.status + ') | merTrend=' + d.merTrendSt + ' (' + d.merTrend + '%) | aovTrend=' + d.aovSt + ' | nrsTrend=' + d.nrsSt + ' | repTrend=' + d.repSt + ' | stability=' + d.stability;
   }
 
-  // Key metrics
-  doc.setFont('helvetica','bold');
-  doc.setFontSize(8);
-  doc.setTextColor(113,128,144);
-  doc.text('KEY METRICS — LAST WEEK',ml,y);
-  y+=5;
-  const metrics=[
-    ['Total MER',fmtR(last.mer)],
-    ['Ads MER (PPC Rev / Spend)',fmtR(last.adsMer)],
-    ['New Revenue / Spend',fmtR(last.nrs)],
-    ['Repeat Rate',fmtPct(last.repRate)+' ('+last.repOrders+' of '+last.orders+' orders)'],
-    ['AOV',fmt$(last.aov)+' · New: '+fmt$(last.newAov)+' · Repeat: '+fmt$(last.repAov)],
-    ['Ad Spend',fmt$(last.spend)],
-    ['PPC Revenue',fmt$(last.ppcRev||0)],
-    ['Total Revenue',fmt$(last.rev)],
+  let comparisonBlock = '';
+  if (compareEntries && compareEntries.length) {
+    const compRows = compareEntries.map(formatEntry).join('\n  ');
+    comparisonBlock = '\n== COMPARISON PERIOD (' + compareRange + ') ==\n  ' + compRows + '\n';
+  }
+
+  const questionBlock = question.trim() ? '\n== OPERATOR\'S SPECIFIC QUESTION ==\n' + question.trim() + '\n\nAnswer this directly and concretely first, then continue with the structure below.\n' : '';
+
+  return `You are a senior business auditor reviewing a Weekly Business Tracker for an e-commerce operator. Your job: read the data, see what the rules engine missed, tell the operator what's actually going on, and what to investigate before they act. Operator-to-operator voice. Specific. No marketing speak.
+
+== METHODOLOGY (the operator's framework) ==
+- MER (Marketing Efficiency Ratio) = Total Revenue / Total Ad Spend. The headline efficiency metric.
+- Ads MER = PPC Revenue / Spend (efficiency of just the directly-attributed sales)
+- NRS (New Revenue / Spend) = how efficiently ad dollars acquire NEW customer revenue
+- Repeat Rate = repeat orders / total orders (retention signal)
+- AOV variants = total / new / repeat (basket size + customer mix)
+- MER zones: STRONG ≥ ${cfg().merStrong}×, ACCEPTABLE ${cfg().merAccept}–${cfg().merStrong}×, WEAK ${cfg().merFloor}–${cfg().merAccept}×, FAIL < ${cfg().merFloor}×
+- Decision rules combine 4W avg MER zone + MER trend + stability → SCALE / SCALE (MONITOR) / HOLD — STRONG / HOLD / CAUTION / INVESTIGATE
+- Auxiliary signals (AOV, NRS, repeat rate trends) flag drivers but don't change the decision
+
+== CLIENT ==
+${client.name}
+
+== PRIMARY PERIOD (${primaryRange}) ==
+  ${primaryRows}
+
+== RULES ENGINE VERDICT ==
+${rulesVerdict}
+${comparisonBlock}${questionBlock}
+== YOUR JOB — write the audit in this structure ==
+
+1. THE PATTERN (2-3 sentences max)
+What's actually happening across the period that the single-window view misses. Trajectory and INTERACTIONS BETWEEN SIGNALS — this is your edge over the rules engine. Examples to look for:
+- Repeat rate climbing while new-customer revenue falls (loyalty masking acquisition problems)
+- AOV rising but order count dropping (price/promo trade-off)
+- MER stable but Ads MER falling (organic carrying the load — fragile)
+- NRS deteriorating faster than MER (acquisition cost rising before total efficiency feels it)
+
+2. WHAT THE RULES MISSED OR UNDER-WEIGHTED
+The rules concluded ${rulesVerdict.split('|')[0].trim()}. What does the data show that this verdict doesn't surface?
+- Cross-signal patterns (the rules check signals individually, not together)
+- Trend acceleration vs flat decline
+- Persistence (3 borderline weeks ≠ 1 bad week)
+- Magnitude reasoning (small slip vs cliff)
+${compareEntries && compareEntries.length ? '- HOW DOES THE PRIMARY PERIOD COMPARE TO THE COMPARISON PERIOD? This is critical context — what changed?' : ''}
+
+3. INVESTIGATION CHECKLIST (3-5 specific items)
+What to check BEFORE acting. Concrete only:
+- Specific data sources (Google Ads → Insights, Shopify/storefront analytics, email/SMS retention reports, attribution settings)
+- Specific time windows ("look at week X specifically because...")
+- Cross-references with external context (promo calendar, inventory issues, seasonality, competitor activity)
+Each check should have a one-line WHY.
+
+4. ACTION RECOMMENDATION
+Either confirm the rules verdict with new context, OR argue for a different action with reasoning. Be specific about MAGNITUDE if recommending a spend change. If holding, say what would change your mind.
+
+5. WHAT TO WATCH NEXT WEEK
+ONE concrete signal to monitor. Specific.
+
+== HARD RULES ==
+- Reference real data points and weeks. No invented numbers.
+- If you can't tell something from this data, SAY SO and direct the operator where to find it.
+- 400-600 words total. Tight. Scannable. No padding.
+- No marketing speak. Talk like an operator briefing another operator.`;
+}
+
+async function runAudit() {
+  if (!aiSettings.apiKey) { toast('No API key set — open Settings and add your Anthropic key', 'error'); return; }
+  const clientId = document.getElementById('aud-client').value;
+  const client = db.clients.find(c => c.id === clientId);
+  if (!client) { toast('Pick a client', 'error'); return; }
+  const period = document.getElementById('aud-period').value;
+  const customStart = document.getElementById('aud-custom-start').value;
+  const customEnd = document.getElementById('aud-custom-end').value;
+  const compareMode = document.getElementById('aud-compare').value;
+  const compStart = document.getElementById('aud-comp-start').value;
+  const compEnd = document.getElementById('aud-comp-end').value;
+  const question = document.getElementById('aud-question').value || '';
+
+  const { entries: primaryEntries, rangeLabel: primaryRange } = getAuditEntries(client, period, customStart, customEnd);
+  if (primaryEntries.length < 2) { toast('Need at least 2 weeks of data in the primary period', 'error'); return; }
+  const { entries: compareEntries, rangeLabel: compareRange } = getComparisonEntries(client, primaryEntries, compareMode, compStart, compEnd);
+
+  const prompt = buildAuditPrompt({ client, primaryEntries, primaryRange, compareEntries, compareRange, question });
+
+  const btn = document.getElementById('aud-run-btn');
+  const status = document.getElementById('aud-status');
+  btn.disabled = true; btn.textContent = '⏳ Running...';
+  status.textContent = 'Sending to Claude...';
+  document.getElementById('aud-output-card').style.display = 'block';
+  document.getElementById('aud-output').textContent = 'Running audit...';
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': aiSettings.apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: aiSettings.model,
+        max_tokens: 2500,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    if (!resp.ok) {
+      const errText = await resp.text();
+      throw new Error('API error ' + resp.status + ': ' + errText.slice(0, 300));
+    }
+    const data = await resp.json();
+    const text = data.content.filter(c => c.type === 'text').map(c => c.text).join('\n');
+    const usage = data.usage || {};
+    const isOpus = aiSettings.model.includes('opus');
+    const cost = isOpus
+      ? (usage.input_tokens || 0) * 15 / 1e6 + (usage.output_tokens || 0) * 75 / 1e6
+      : (usage.input_tokens || 0) * 3 / 1e6 + (usage.output_tokens || 0) * 15 / 1e6;
+    document.getElementById('aud-output').textContent = text;
+    document.getElementById('aud-usage-info').textContent =
+      'Tokens: ' + (usage.input_tokens || 0) + ' in / ' + (usage.output_tokens || 0) + ' out · Actual cost: $' + cost.toFixed(4) + ' · Model: ' + aiSettings.model;
+    lastAuditResult = {
+      id: 'aud_' + Date.now(),
+      timestamp: new Date().toISOString(),
+      clientId,
+      clientName: client.name,
+      scope: { primaryRange, compareRange: compareRange || null, question },
+      response: text,
+      usage: { input_tokens: usage.input_tokens || 0, output_tokens: usage.output_tokens || 0, cost, model: aiSettings.model }
+    };
+    status.textContent = 'Done — review output below';
+    toast('Audit complete', 'success');
+    updateAiSpendInfo();
+  } catch (err) {
+    document.getElementById('aud-output').textContent = 'Error: ' + err.message + '\n\nCheck your API key, model availability, and account credits.';
+    status.textContent = '';
+    toast('Audit failed — see output', 'error');
+  } finally {
+    btn.disabled = false; btn.textContent = '▶ Run Audit';
+  }
+}
+
+function saveAudit() {
+  if (!lastAuditResult) { toast('No audit to save', 'error'); return; }
+  const client = db.clients.find(c => c.id === lastAuditResult.clientId);
+  if (!client) { toast('Client not found', 'error'); return; }
+  if (!client.audits) client.audits = [];
+  if (client.audits.find(a => a.id === lastAuditResult.id)) { toast('Already saved', 'error'); return; }
+  client.audits.unshift(JSON.parse(JSON.stringify(lastAuditResult)));
+  save();
+  renderAuditHistoryList();
+  toast('Audit saved to history', 'success');
+}
+
+function copyAuditOutput() {
+  const text = document.getElementById('aud-output').textContent;
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(
+    () => toast('Copied to clipboard', 'success'),
+    () => toast('Copy failed — select and copy manually', 'error')
+  );
+}
+
+function renderAuditHistoryList() {
+  const clientId = document.getElementById('aud-client') ? document.getElementById('aud-client').value : null;
+  const client = clientId ? db.clients.find(c => c.id === clientId) : activeClient();
+  const list = document.getElementById('aud-history-list');
+  if (!list) return;
+  const audits = (client && client.audits) ? client.audits : [];
+  if (!audits.length) {
+    list.innerHTML = '<p style="color:var(--text3);font-size:12px;font-family:\'IBM Plex Mono\',monospace">No saved audits for this client yet.</p>';
+    return;
+  }
+  list.innerHTML = audits.map(a => {
+    const d = new Date(a.timestamp).toLocaleString();
+    const q = a.scope.question ? ' · "' + escapeHtml(a.scope.question.slice(0, 60)) + (a.scope.question.length > 60 ? '..."' : '"') : '';
+    return '<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">' +
+      '<div style="flex:1;min-width:0">' +
+      '<div style="font-size:12px;color:var(--text);font-family:\'IBM Plex Mono\',monospace">' + escapeHtml(a.scope.primaryRange) + q + '</div>' +
+      '<div style="font-size:11px;color:var(--text3);font-family:\'IBM Plex Mono\',monospace;margin-top:3px">' + d + ' · $' + a.usage.cost.toFixed(4) + '</div>' +
+      '</div>' +
+      '<button class="btn btn-edit" onclick="loadAudit(\'' + a.id + '\')">View</button>' +
+      '<button class="btn btn-del" onclick="deleteAudit(\'' + a.id + '\')">Del</button>' +
+      '</div>';
+  }).join('');
+}
+
+function loadAudit(auditId) {
+  const client = db.clients.find(c => c.id === document.getElementById('aud-client').value);
+  if (!client || !client.audits) return;
+  const a = client.audits.find(x => x.id === auditId);
+  if (!a) return;
+  lastAuditResult = JSON.parse(JSON.stringify(a));
+  document.getElementById('aud-output-card').style.display = 'block';
+  document.getElementById('aud-output').textContent = a.response;
+  document.getElementById('aud-usage-info').textContent =
+    'Tokens: ' + a.usage.input_tokens + ' in / ' + a.usage.output_tokens + ' out · Cost: $' + a.usage.cost.toFixed(4) + ' · Model: ' + a.usage.model + ' · Saved: ' + new Date(a.timestamp).toLocaleString();
+  document.getElementById('aud-status').textContent = 'Loaded saved audit';
+  document.getElementById('aud-output-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function deleteAudit(auditId) {
+  const client = db.clients.find(c => c.id === document.getElementById('aud-client').value);
+  if (!client || !client.audits) return;
+  const a = client.audits.find(x => x.id === auditId);
+  if (!a) return;
+  customConfirm(
+    'Delete this saved audit? (' + a.scope.primaryRange + ')',
+    () => {
+      client.audits = client.audits.filter(x => x.id !== auditId);
+      save();
+      renderAuditHistoryList();
+      toast('Audit deleted', 'success');
+    },
+    { title: 'Delete Saved Audit', yesLabel: 'Delete' }
+  );
+}
+
+function updateAiSpendInfo() {
+  const el = document.getElementById('ai-spend-info');
+  if (!el) return;
+  const cutoff = Date.now() - 30 * 24 * 60 * 60 * 1000;
+  let total = 0, count = 0;
+  db.clients.forEach(c => {
+    (c.audits || []).forEach(a => {
+      if (new Date(a.timestamp).getTime() > cutoff) { total += a.usage.cost || 0; count++; }
+    });
+  });
+  el.textContent = count ? 'Last 30 days: ' + count + ' audit' + (count === 1 ? '' : 's') + ' · $' + total.toFixed(4) + ' total spend (saved audits only)' : 'No saved audits in the last 30 days.';
+}
+
+// ============================================================================
+// PDF EXPORTS
+// ============================================================================
+function exportDecisionPDF() {
+  const start = document.getElementById('dec-start').value;
+  const entries = getWindow(start);
+  if (entries.length < 2) { toast('Need at least 2 weeks of data', 'error'); return; }
+  if (!window.jspdf) { toast('PDF library still loading — try again', 'error'); return; }
+  const d = calcDecision(entries);
+  const last = entries[entries.length - 1];
+  const dateRange = entries[0].date + ' to ' + last.date;
+  const client = activeClient().name || 'Client';
+  const preparer = db.preparedBy || 'Modonix';
+  const today = new Date().toISOString().slice(0, 10);
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'letter' });
+  const W = 215.9, H = 279.4, ml = 15, mr = 15, usableW = W - ml - mr;
+  let y = 0;
+  doc.setFillColor(13, 15, 17); doc.rect(0, 0, W, 22, 'F');
+  doc.setFillColor(99, 102, 241); doc.rect(0, 22, W, 1, 'F');
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(255, 255, 255);
+  doc.text('MODONIX  ·  PREPARED FOR: ' + client.toUpperCase(), ml, 14);
+  doc.setFont('helvetica', 'normal'); doc.setTextColor(139, 143, 154);
+  doc.text('WEEKLY TRACKER  ·  4-WEEK DECISION REPORT', W - mr, 14, { align: 'right' });
+  y = 32;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(113, 128, 144);
+  doc.text('PREPARED BY', ml, y); doc.text('PREPARED FOR', W / 2 + 2, y); y += 5;
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(12); doc.setTextColor(13, 15, 17);
+  doc.text(preparer, ml, y); doc.text(client, W / 2 + 2, y); y += 5;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(113, 128, 144);
+  doc.text('E-Commerce & Digital Commerce Consulting', ml, y); doc.text(today, W / 2 + 2, y); y += 8;
+  doc.setDrawColor(220, 226, 234); doc.setLineWidth(0.3); doc.line(ml, y, W - mr, y); y += 6;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(113, 128, 144);
+  doc.text('Period: ' + dateRange, ml, y); y += 5;
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(18); doc.setTextColor(13, 15, 17);
+  doc.text('4-Week Decision Report', ml, y); y += 7;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(113, 128, 144);
+  doc.text('Weekly Business Tracker — MER & Revenue Quality Analysis', ml, y); y += 10;
+  doc.setLineWidth(0.3); doc.line(ml, y, W - mr, y); y += 8;
+  const decColor = d.dec.startsWith('SCALE') ? [34, 197, 94] : d.dec.startsWith('HOLD') ? [245, 158, 11] : [239, 68, 68];
+  const decBg = d.dec.startsWith('SCALE') ? [240, 255, 244] : d.dec.startsWith('HOLD') ? [255, 251, 235] : [255, 245, 245];
+  doc.setFillColor(...decBg); doc.setDrawColor(...decColor); doc.setLineWidth(0.5);
+  doc.roundedRect(ml, y, usableW, 18, 2, 2, 'FD');
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(12); doc.setTextColor(...decColor);
+  doc.text(d.dec, ml + 5, y + 8);
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(45, 55, 72);
+  const ratLines = doc.splitTextToSize(d.rationale, usableW - 10);
+  doc.text(ratLines, ml + 5, y + 13);
+  y += 22;
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(113, 128, 144);
+  doc.text('SIGNAL DASHBOARD', ml, y); y += 5;
+  const cardW = (usableW - 9) / 4;
+  const cards = [
+    { label: '4W AVG TOTAL MER', val: fmtR(d.avgMer), sub: d.merZone.status, subColor: d.merZone.status === 'STRONG' ? [34, 197, 94] : d.merZone.status === 'ACCEPTABLE' ? [59, 130, 246] : d.merZone.status === 'WEAK' ? [245, 158, 11] : [239, 68, 68] },
+    { label: 'MER TREND W4 VS W1', val: d.merTrend + '%', sub: d.merTrendSt, subColor: d.merTrendSt === 'IMPROVING' ? [34, 197, 94] : d.merTrendSt === 'DECLINING' ? [239, 68, 68] : [113, 128, 144] },
+    { label: 'AOV TREND', val: fmt$(last.aov), sub: d.aovSt, subColor: d.aovSt === 'IMPROVING' ? [34, 197, 94] : d.aovSt === 'DECLINING' ? [239, 68, 68] : [113, 128, 144] },
+    { label: 'NEW REV / SPEND', val: fmtR(last.nrs), sub: d.nrsSt, subColor: d.nrsSt === 'IMPROVING' ? [34, 197, 94] : d.nrsSt === 'DECLINING' ? [239, 68, 68] : [113, 128, 144] },
   ];
-  metrics.forEach((m,i)=>{
-    const bg=i%2===0?[255,255,255]:[248,249,250];
-    doc.setFillColor(...bg);
-    doc.setDrawColor(220,226,234);
-    doc.setLineWidth(0.2);
-    doc.rect(ml,y,usableW,7,'FD');
-    doc.setFont('helvetica','bold');
-    doc.setFontSize(8);
-    doc.setTextColor(45,55,72);
-    doc.text(m[0],ml+3,y+5);
-    doc.setFont('helvetica','normal');
-    doc.setTextColor(13,15,17);
-    doc.text(m[1],W-mr-3,y+5,{align:'right'});
-    y+=7;
+  cards.forEach((c, i) => {
+    const cx = ml + i * (cardW + 3);
+    doc.setFillColor(248, 249, 250); doc.setDrawColor(220, 226, 234); doc.setLineWidth(0.3);
+    doc.roundedRect(cx, y, cardW, 20, 2, 2, 'FD');
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(7); doc.setTextColor(113, 128, 144);
+    doc.text(c.label, cx + 3, y + 5);
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(11); doc.setTextColor(13, 15, 17);
+    doc.text(c.val, cx + 3, y + 12);
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(7); doc.setTextColor(...c.subColor);
+    doc.text(c.sub, cx + 3, y + 18);
   });
-  y+=6;
-
-  // 4-week trend table
-  doc.setFont('helvetica','bold');
-  doc.setFontSize(8);
-  doc.setTextColor(113,128,144);
-  doc.text('4-WEEK TREND',ml,y);
-  y+=5;
-  const cols=['DATE','REVENUE','TOTAL MER','ADS MER','AOV','NEW REV/SPEND','REP RATE','SPEND'];
-  const colW=[24,26,22,20,22,26,18,20];
-  doc.setFillColor(13,15,17);
-  doc.rect(ml,y,usableW,7,'F');
-  doc.setFont('helvetica','bold');
-  doc.setFontSize(7);
-  doc.setTextColor(255,255,255);
-  let cx=ml;
-  cols.forEach((c,i)=>{doc.text(c,cx+2,y+5);cx+=colW[i];});
-  y+=7;
-  entries.forEach((e,ri)=>{
-    const bg=ri%2===0?[255,255,255]:[248,249,250];
-    doc.setFillColor(...bg);
-    doc.setDrawColor(220,226,234);
-    doc.setLineWidth(0.2);
-    doc.rect(ml,y,usableW,7,'FD');
-    doc.setFont('helvetica','normal');
-    doc.setFontSize(7);
-    doc.setTextColor(45,55,72);
-    const row=[e.date,fmt$(e.rev),fmtR(e.mer),fmtR(e.adsMer),fmt$(e.aov),fmtR(e.nrs),fmtPct(e.repRate),fmt$(e.spend)];
-    cx=ml;
-    row.forEach((v,i)=>{doc.text(String(v),cx+2,y+5);cx+=colW[i];});
-    y+=7;
+  y += 25;
+  if (d.drivers.length) {
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(113, 128, 144);
+    doc.text('ACTIVE SIGNAL DRIVERS', ml, y); y += 5;
+    d.drivers.forEach(dr => {
+      const bgColor = dr.severity === 'override' ? [255, 245, 245] : [255, 251, 235];
+      const bdColor = dr.severity === 'override' ? [239, 68, 68] : [245, 158, 11];
+      doc.setFillColor(...bgColor); doc.setDrawColor(...bdColor); doc.setLineWidth(0.4);
+      doc.roundedRect(ml, y, usableW, 10, 1, 1, 'FD');
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(7); doc.setTextColor(...bdColor);
+      doc.text(dr.signal.toUpperCase(), ml + 3, y + 4);
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(7); doc.setTextColor(13, 15, 17);
+      doc.text(dr.value, ml + 35, y + 4);
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(7); doc.setTextColor(45, 55, 72);
+      const reasonLines = doc.splitTextToSize(dr.reason, usableW - 85);
+      doc.text(reasonLines[0], ml + 70, y + 4);
+      y += 12;
+    });
+  }
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(113, 128, 144);
+  doc.text('KEY METRICS — LAST WEEK', ml, y); y += 5;
+  const metrics = [
+    ['Total MER', fmtR(last.mer)],
+    ['Ads MER (PPC Rev / Spend)', fmtR(last.adsMer)],
+    ['New Revenue / Spend', fmtR(last.nrs)],
+    ['Repeat Rate', fmtPct(last.repRate) + ' (' + last.repOrders + ' of ' + last.orders + ' orders)'],
+    ['AOV', fmt$(last.aov) + ' · New: ' + fmt$(last.newAov) + ' · Repeat: ' + fmt$(last.repAov)],
+    ['Ad Spend', fmt$(last.spend)],
+    ['PPC Revenue', fmt$(last.ppcRev || 0)],
+    ['Total Revenue', fmt$(last.rev)],
+  ];
+  metrics.forEach((m, i) => {
+    const bg = i % 2 === 0 ? [255, 255, 255] : [248, 249, 250];
+    doc.setFillColor(...bg); doc.setDrawColor(220, 226, 234); doc.setLineWidth(0.2);
+    doc.rect(ml, y, usableW, 7, 'FD');
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(45, 55, 72);
+    doc.text(m[0], ml + 3, y + 5);
+    doc.setFont('helvetica', 'normal'); doc.setTextColor(13, 15, 17);
+    doc.text(m[1], W - mr - 3, y + 5, { align: 'right' });
+    y += 7;
   });
-
-  // Footer
-  doc.setFillColor(240,242,245);
-  doc.rect(0,H-15,W,15,'F');
-  doc.setFont('helvetica','normal');
-  doc.setFontSize(7);
-  doc.setTextColor(113,128,144);
-  doc.text('Confidential — Prepared by '+preparer+' for '+client,ml,H-7);
-  doc.text('Weekly Business Tracker · 4-Week Decision Report',W/2,H-7,{align:'center'});
-  doc.text(today,W-mr,H-7,{align:'right'});
-
-  doc.save('Weekly_Tracker_Decision_'+dateRange.replace(/ /g,'_')+'.pdf');
+  y += 6;
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(113, 128, 144);
+  doc.text('4-WEEK TREND', ml, y); y += 5;
+  const cols = ['DATE', 'REVENUE', 'TOTAL MER', 'ADS MER', 'AOV', 'NEW REV/SPEND', 'REP RATE', 'SPEND'];
+  const colW = [24, 26, 22, 20, 22, 26, 18, 20];
+  doc.setFillColor(13, 15, 17); doc.rect(ml, y, usableW, 7, 'F');
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(7); doc.setTextColor(255, 255, 255);
+  let cx = ml;
+  cols.forEach((c, i) => { doc.text(c, cx + 2, y + 5); cx += colW[i]; });
+  y += 7;
+  entries.forEach((e, ri) => {
+    const bg = ri % 2 === 0 ? [255, 255, 255] : [248, 249, 250];
+    doc.setFillColor(...bg); doc.setDrawColor(220, 226, 234); doc.setLineWidth(0.2);
+    doc.rect(ml, y, usableW, 7, 'FD');
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(7); doc.setTextColor(45, 55, 72);
+    const row = [e.date, fmt$(e.rev), fmtR(e.mer), fmtR(e.adsMer), fmt$(e.aov), fmtR(e.nrs), fmtPct(e.repRate), fmt$(e.spend)];
+    cx = ml;
+    row.forEach((v, i) => { doc.text(String(v), cx + 2, y + 5); cx += colW[i]; });
+    y += 7;
+  });
+  doc.setFillColor(240, 242, 245); doc.rect(0, H - 15, W, 15, 'F');
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(7); doc.setTextColor(113, 128, 144);
+  doc.text('Confidential — Prepared by ' + preparer + ' for ' + client, ml, H - 7);
+  doc.text('Weekly Business Tracker · 4-Week Decision Report', W / 2, H - 7, { align: 'center' });
+  doc.text(today, W - mr, H - 7, { align: 'right' });
+  doc.save('Weekly_Tracker_Decision_' + dateRange.replace(/ /g, '_') + '.pdf');
+  toast('Decision PDF exported', 'success');
 }
 
-function renderSettings(){
-  document.getElementById('s-client').value=cfg().clientName||'';
-  document.getElementById('s-preparer').value=cfg().preparedBy||'Ahmed — Modonix';
-  document.getElementById('s-mer-floor').value=cfg().merFloor;
-  document.getElementById('s-mer-accept').value=cfg().merAccept;
-  document.getElementById('s-mer-strong').value=cfg().merStrong;
-  document.getElementById('entry-count').textContent=db.entries.length;
-  const th=cfg().merStrong;
-  document.getElementById('mer-zone-table').innerHTML=`<div class="tbl-wrap" style="margin-bottom:16px"><table class="tbl">
-    <thead><tr><th>MER Range</th><th>Zone</th><th>Meaning</th></tr></thead>
-    <tbody>
-      <tr><td>Above ${cfg().merStrong}×</td><td><span class="badge bg">STRONG</span></td><td>Business is healthy and efficient. Supports scaling.</td></tr>
-      <tr><td>${cfg().merAccept}× to ${cfg().merStrong}×</td><td><span class="badge bb">ACCEPTABLE</span></td><td>Profitable but thin. Hold before scaling.</td></tr>
-      <tr><td>${cfg().merFloor}× to ${cfg().merAccept}×</td><td><span class="badge by">WEAK</span></td><td>Compressing. Investigate drivers.</td></tr>
-      <tr><td>Below ${cfg().merFloor}×</td><td><span class="badge br">FAIL</span></td><td>Below profitability floor. Act immediately.</td></tr>
-    </tbody>
-  </table></div>`;
+function exportAuditPDF() {
+  if (!lastAuditResult) { toast('No audit to export', 'error'); return; }
+  if (!window.jspdf) { toast('PDF library still loading — try again', 'error'); return; }
+  const a = lastAuditResult;
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'letter' });
+  const W = 215.9, H = 279.4, ml = 15, mr = 15, usableW = W - ml - mr;
+  let y = 0;
+  const preparer = db.preparedBy || 'Ahmed — Modonix';
+  const today = new Date().toISOString().slice(0, 10);
+  doc.setFillColor(13, 15, 17); doc.rect(0, 0, W, 22, 'F');
+  doc.setFillColor(99, 102, 241); doc.rect(0, 22, W, 1, 'F');
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(255, 255, 255);
+  doc.text('MODONIX  ·  ' + a.clientName.toUpperCase(), ml, 14);
+  doc.setFont('helvetica', 'normal'); doc.setTextColor(139, 143, 154);
+  doc.text('AI AUDITOR  ·  EXPERT REVIEW', W - mr, 14, { align: 'right' });
+  y = 32;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(113, 128, 144);
+  doc.text('PREPARED BY', ml, y); doc.text('PREPARED FOR', W / 2 + 2, y); y += 5;
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(12); doc.setTextColor(13, 15, 17);
+  doc.text(preparer, ml, y); doc.text(a.clientName, W / 2 + 2, y); y += 5;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(113, 128, 144);
+  doc.text('E-Commerce & Digital Commerce Consulting', ml, y); doc.text(today, W / 2 + 2, y); y += 8;
+  doc.setDrawColor(220, 226, 234); doc.setLineWidth(0.3); doc.line(ml, y, W - mr, y); y += 6;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(113, 128, 144);
+  doc.text('Period: ' + a.scope.primaryRange, ml, y); y += 5;
+  if (a.scope.compareRange) { doc.text('Comparison: ' + a.scope.compareRange, ml, y); y += 5; }
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(18); doc.setTextColor(13, 15, 17);
+  doc.text('Expert Auditor Review', ml, y); y += 7;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(113, 128, 144);
+  doc.text('AI-generated analysis · Model: ' + a.usage.model, ml, y); y += 10;
+  doc.setLineWidth(0.3); doc.line(ml, y, W - mr, y); y += 8;
+  if (a.scope.question) {
+    doc.setFillColor(245, 247, 250); doc.setDrawColor(99, 102, 241); doc.setLineWidth(0.4);
+    doc.roundedRect(ml, y, usableW, 12, 2, 2, 'FD');
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(99, 102, 241);
+    doc.text('OPERATOR QUESTION', ml + 4, y + 5);
+    doc.setFont('helvetica', 'italic'); doc.setFontSize(8); doc.setTextColor(45, 55, 72);
+    const qLines = doc.splitTextToSize(a.scope.question, usableW - 8);
+    doc.text(qLines[0] || '', ml + 4, y + 10);
+    y += 16;
+  }
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(13, 15, 17);
+  const lines = doc.splitTextToSize(a.response, usableW);
+  const lineH = 4.5;
+  lines.forEach(line => {
+    if (y > H - 25) { doc.addPage(); y = 20; }
+    if (/^\d+\.\s+[A-Z]/.test(line) || (line.length < 60 && line === line.toUpperCase() && /[A-Z]/.test(line))) {
+      doc.setFont('helvetica', 'bold'); doc.setTextColor(99, 102, 241);
+    } else {
+      doc.setFont('helvetica', 'normal'); doc.setTextColor(45, 55, 72);
+    }
+    doc.text(line, ml, y); y += lineH;
+  });
+  doc.setFillColor(240, 242, 245); doc.rect(0, H - 15, W, 15, 'F');
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(7); doc.setTextColor(113, 128, 144);
+  doc.text('Confidential — Prepared by ' + preparer + ' for ' + a.clientName, ml, H - 7);
+  doc.text('AI Auditor Review · Modonix', W / 2, H - 7, { align: 'center' });
+  doc.text(today, W - mr, H - 7, { align: 'right' });
+  const safeName = a.clientName.replace(/[^a-z0-9]+/gi, '_');
+  doc.save('AI_Audit_' + safeName + '_' + today + '.pdf');
+  toast('Audit PDF exported', 'success');
 }
 
-function updateSettings(){
-  cfg().clientName=document.getElementById('s-client').value.trim();
-  cfg().preparedBy=document.getElementById('s-preparer').value.trim();
-  cfg().merFloor=parseFloat(document.getElementById('s-mer-floor').value)||10;
-  cfg().merAccept=parseFloat(document.getElementById('s-mer-accept').value)||10;
-  cfg().merStrong=parseFloat(document.getElementById('s-mer-strong').value)||12;
-  save();renderSettings();
-}
-
-document.getElementById('e-date').value=new Date().toISOString().slice(0,10);
+// ============================================================================
+// INIT
+// ============================================================================
+populateClientSwitcher();
+document.getElementById('e-date').value = new Date().toISOString().slice(0, 10);
 populateWindowSelectors();
 renderSettings();
+updateBackupBanner();
+updateLastBackupInfo();
+loadAiSettingsToUi();
 </script>
 </body>
 </html>
