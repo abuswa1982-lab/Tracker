@@ -123,7 +123,7 @@ button.btn.solid-danger:hover{background:#d73a32;border-color:#d73a32}
   <div class="header-right">
     <select id="client-switcher" onchange="switchClient(this.value)" style="background:var(--surface2);color:var(--text);border:1px solid var(--border2);padding:6px 10px;border-radius:var(--radius);font-family:'IBM Plex Mono',monospace;font-size:11px;min-width:140px;text-transform:uppercase;letter-spacing:.04em;cursor:pointer"></select>
     <button class="btn-header" onclick="quickAddClient()" title="Add a new client" style="background:transparent;color:var(--accent);border:1px solid rgba(99,102,241,0.3)">+ Client</button>
-    <span class="header-tag">v3 · AI Auditor</span>
+    <span class="header-tag">v3.3 · AI Auditor</span>
     <button class="btn-header export" onclick="exportBackup()" title="Download all clients' data as JSON — do this weekly">⬇ Export Backup</button>
     <button class="btn-header import" onclick="document.getElementById('backup-import').click()" title="Restore data from a backup JSON file">⬆ Import Backup</button>
     <input type="file" id="backup-import" style="display:none" accept=".json" onchange="importBackup(event)">
@@ -328,22 +328,13 @@ button.btn.solid-danger:hover{background:#d73a32;border-color:#d73a32}
   <div class="card">
     <div class="card-title">AI Auditor Settings</div>
     <p style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:14px">
-      The AI Audit tab uses your Anthropic API key to generate expert auditor analysis. Key is stored only in this browser. Get a key at <span style="font-family:'IBM Plex Mono',monospace">console.anthropic.com</span>.
+      Paste your Anthropic API key — that's it. Tool uses Sonnet (balanced cost and quality, roughly $0.03–0.05 per audit). Get a key at <span style="font-family:'IBM Plex Mono',monospace">console.anthropic.com</span>. Key is stored only in this browser.
     </p>
-    <div class="g2" style="margin-bottom:12px;max-width:600px">
-      <div>
-        <label>Anthropic API Key</label>
-        <input type="password" id="s-api-key" placeholder="sk-ant-..." oninput="saveApiKey()">
-      </div>
-      <div>
-        <label>Model</label>
-        <select id="s-model" onchange="saveModel()">
-          <option value="claude-sonnet-4-5-20250929">Sonnet 4.5 (faster, cheaper)</option>
-          <option value="claude-opus-4-5">Opus 4.5 (deeper, pricier)</option>
-        </select>
-      </div>
+    <div style="max-width:500px">
+      <label>Anthropic API Key</label>
+      <input type="password" id="s-api-key" placeholder="sk-ant-..." oninput="saveApiKey()">
     </div>
-    <p style="font-size:11px;color:var(--text3);font-family:'IBM Plex Mono',monospace" id="ai-spend-info"></p>
+    <p style="font-size:11px;color:var(--text3);font-family:'IBM Plex Mono',monospace;margin-top:10px" id="ai-spend-info"></p>
   </div>
 
   <div class="card">
@@ -1188,20 +1179,37 @@ function updatePreparedBy() {
 // ============================================================================
 // AI AUDITOR
 // ============================================================================
-let aiSettings = { apiKey: '', model: 'claude-sonnet-4-5-20250929' };
+// Model is hardcoded to Sonnet — best balance of quality and cost for this use case.
+// To use a different model later (e.g. when Sonnet 4.5 gets deprecated), update this constant.
+const DEFAULT_MODEL = 'claude-sonnet-4-5-20250929';
+
+// Substring-based pricing — robust to model name changes
+function pricingFor(modelId) {
+  const id = (modelId || '').toLowerCase();
+  if (id.includes('opus')) return { in: 15, out: 75, label: 'Opus (approx)' };
+  if (id.includes('sonnet')) return { in: 3, out: 15, label: 'Sonnet (approx)' };
+  if (id.includes('haiku')) return { in: 0.8, out: 4, label: 'Haiku (approx)' };
+  return { in: null, out: null, label: 'Unknown model' };
+}
+
+function calcCost(modelId, inputTokens, outputTokens) {
+  const p = pricingFor(modelId);
+  if (p.in === null) return null;
+  return (inputTokens * p.in / 1e6) + (outputTokens * p.out / 1e6);
+}
+
+let aiSettings = { apiKey: '', model: DEFAULT_MODEL };
 try {
   const raw = localStorage.getItem(AI_KEY);
   if (raw) aiSettings = { ...aiSettings, ...JSON.parse(raw) };
 } catch (e) {}
+if (!aiSettings.model) aiSettings.model = DEFAULT_MODEL;
 
 function saveAiSettings() { localStorage.setItem(AI_KEY, JSON.stringify(aiSettings)); }
 function saveApiKey() { aiSettings.apiKey = document.getElementById('s-api-key').value.trim(); saveAiSettings(); }
-function saveModel() { aiSettings.model = document.getElementById('s-model').value; saveAiSettings(); updateCostPreview(); }
 function loadAiSettingsToUi() {
   const k = document.getElementById('s-api-key');
-  const m = document.getElementById('s-model');
   if (k) k.value = aiSettings.apiKey || '';
-  if (m) m.value = aiSettings.model || 'claude-sonnet-4-5-20250929';
 }
 
 let lastAuditResult = null;
@@ -1268,7 +1276,7 @@ function getComparisonEntries(client, primaryEntries, compareMode, customStart, 
 function updateCostPreview() {
   const el = document.getElementById('aud-cost-preview');
   if (!el) return;
-  const isOpus = aiSettings.model.includes('opus');
+  const p = pricingFor(aiSettings.model);
   const period = document.getElementById('aud-period').value;
   const compare = document.getElementById('aud-compare').value;
   let mult = 1;
@@ -1277,10 +1285,12 @@ function updateCostPreview() {
   if (compare !== 'none') mult *= 1.4;
   const inTok = 3500 * mult;
   const outTok = 1500;
-  const cost = isOpus
-    ? (inTok * 15 / 1e6 + outTok * 75 / 1e6)
-    : (inTok * 3 / 1e6 + outTok * 15 / 1e6);
-  el.textContent = '~$' + cost.toFixed(3) + ' estimated · ' + (isOpus ? 'Opus' : 'Sonnet');
+  if (p.in === null) {
+    el.textContent = 'Cost preview unavailable — check actual cost after run';
+    return;
+  }
+  const cost = (inTok * p.in / 1e6) + (outTok * p.out / 1e6);
+  el.textContent = '~$' + cost.toFixed(3) + ' estimated · ' + p.label;
 }
 
 function buildAuditPrompt({ client, primaryEntries, primaryRange, compareEntries, compareRange, question }) {
@@ -1409,13 +1419,11 @@ async function runAudit() {
     const data = await resp.json();
     const text = data.content.filter(c => c.type === 'text').map(c => c.text).join('\n');
     const usage = data.usage || {};
-    const isOpus = aiSettings.model.includes('opus');
-    const cost = isOpus
-      ? (usage.input_tokens || 0) * 15 / 1e6 + (usage.output_tokens || 0) * 75 / 1e6
-      : (usage.input_tokens || 0) * 3 / 1e6 + (usage.output_tokens || 0) * 15 / 1e6;
+    const cost = calcCost(aiSettings.model, usage.input_tokens || 0, usage.output_tokens || 0);
+    const costStr = cost === null ? 'unknown (price not in lookup)' : '$' + cost.toFixed(4);
     document.getElementById('aud-output').textContent = text;
     document.getElementById('aud-usage-info').textContent =
-      'Tokens: ' + (usage.input_tokens || 0) + ' in / ' + (usage.output_tokens || 0) + ' out · Actual cost: $' + cost.toFixed(4) + ' · Model: ' + aiSettings.model;
+      'Tokens: ' + (usage.input_tokens || 0) + ' in / ' + (usage.output_tokens || 0) + ' out · Actual cost: ' + costStr + ' · Model: ' + aiSettings.model;
     lastAuditResult = {
       id: 'aud_' + Date.now(),
       timestamp: new Date().toISOString(),
@@ -1423,7 +1431,7 @@ async function runAudit() {
       clientName: client.name,
       scope: { primaryRange, compareRange: compareRange || null, question },
       response: text,
-      usage: { input_tokens: usage.input_tokens || 0, output_tokens: usage.output_tokens || 0, cost, model: aiSettings.model }
+      usage: { input_tokens: usage.input_tokens || 0, output_tokens: usage.output_tokens || 0, cost: cost === null ? 0 : cost, model: aiSettings.model }
     };
     status.textContent = 'Done — review output below';
     toast('Audit complete', 'success');
