@@ -123,7 +123,7 @@ button.btn.solid-danger:hover{background:#d73a32;border-color:#d73a32}
   <div class="header-right">
     <select id="client-switcher" onchange="switchClient(this.value)" style="background:var(--surface2);color:var(--text);border:1px solid var(--border2);padding:6px 10px;border-radius:var(--radius);font-family:'IBM Plex Mono',monospace;font-size:11px;min-width:140px;text-transform:uppercase;letter-spacing:.04em;cursor:pointer"></select>
     <button class="btn-header" onclick="quickAddClient()" title="Add a new client" style="background:transparent;color:var(--accent);border:1px solid rgba(99,102,241,0.3)">+ Client</button>
-    <span class="header-tag">v3.3 · AI Auditor</span>
+    <span class="header-tag">v3.4 · AI Auditor</span>
     <button class="btn-header export" onclick="exportBackup()" title="Download all clients' data as JSON — do this weekly">⬇ Export Backup</button>
     <button class="btn-header import" onclick="document.getElementById('backup-import').click()" title="Restore data from a backup JSON file">⬆ Import Backup</button>
     <input type="file" id="backup-import" style="display:none" accept=".json" onchange="importBackup(event)">
@@ -158,11 +158,11 @@ button.btn.solid-danger:hover{background:#d73a32;border-color:#d73a32}
       <div></div>
     </div>
     <hr class="sep">
-    <div class="card-title">Revenue</div>
+    <div class="card-title">Revenue — Enter New + Repeat, Total calculates automatically</div>
     <div class="g3" style="margin-bottom:14px">
-      <div><label>Total Revenue ($)</label><input type="number" id="e-rev" step="0.01" placeholder="0.00" oninput="calcAuto()"></div>
       <div><label>New Revenue ($)</label><input type="number" id="e-newrev" step="0.01" placeholder="0.00" oninput="calcAuto()"></div>
       <div><label>Repeat Revenue ($)</label><input type="number" id="e-reprev" step="0.01" placeholder="0.00" oninput="calcAuto()"></div>
+      <div><label>Total Revenue ($) (auto)</label><input type="number" id="e-rev" readonly placeholder="0.00"></div>
     </div>
     <hr class="sep">
     <div class="card-title">Orders — Enter New + Repeat, Total calculates automatically</div>
@@ -918,14 +918,15 @@ function populateWindowSelectors() {
 // ENTRY UI
 // ============================================================================
 function calcAuto() {
-  const rev = parseFloat(document.getElementById('e-rev').value) || 0;
   const newRev = parseFloat(document.getElementById('e-newrev').value) || 0;
   const repRev = parseFloat(document.getElementById('e-reprev').value) || 0;
+  const rev = newRev + repRev;
   const newOrders = parseFloat(document.getElementById('e-neworders').value) || 0;
   const repOrders = parseFloat(document.getElementById('e-reporders').value) || 0;
   const spend = parseFloat(document.getElementById('e-spend').value) || 0;
   const ppcRev = parseFloat(document.getElementById('e-ppcrev').value) || 0;
   const orders = newOrders + repOrders;
+  document.getElementById('e-rev').value = rev > 0 ? rev.toFixed(2) : '';
   document.getElementById('e-orders').value = orders || '';
   if (!rev && !orders && !spend) { document.getElementById('auto-calc').style.display = 'none'; return; }
   const c = calcEntry({ rev, newRev, repRev, newOrders, repOrders, spend, ppcRev });
@@ -946,13 +947,13 @@ function saveEntry() {
   const date = document.getElementById('e-date').value;
   const spend = parseFloat(document.getElementById('e-spend').value) || 0;
   const ppcRev = parseFloat(document.getElementById('e-ppcrev').value) || 0;
-  const rev = parseFloat(document.getElementById('e-rev').value) || 0;
   const newRev = parseFloat(document.getElementById('e-newrev').value) || 0;
   const repRev = parseFloat(document.getElementById('e-reprev').value) || 0;
+  const rev = newRev + repRev;
   const newOrders = parseFloat(document.getElementById('e-neworders').value) || 0;
   const repOrders = parseFloat(document.getElementById('e-reporders').value) || 0;
   const msg = document.getElementById('e-msg');
-  if (!date || !rev || !spend) { msg.className = 'err'; msg.textContent = 'Date, revenue, and spend required.'; return; }
+  if (!date || !rev || !spend) { msg.className = 'err'; msg.textContent = 'Date, revenue (new + repeat), and spend required.'; return; }
   activeClient().entries.push({ id: 'e' + Date.now(), date, spend, ppcRev, rev, newRev, repRev, newOrders, repOrders });
   activeClient().entries.sort((a, b) => a.date.localeCompare(b.date));
   save();
